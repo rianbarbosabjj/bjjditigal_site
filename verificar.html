@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,7 +6,6 @@
   <link rel="icon" href="imagens/logo.png">
   <title>Verificação de Certificado - BJJ Digital</title>
   
-  <!-- Fonte Poppins -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -64,12 +62,59 @@
       letter-spacing: 1px;
       text-align: center;
     }
-
+    
     .subtitle {
       font-size: 0.9rem;
       color: #a0c0b5;
       margin-bottom: 30px;
       text-align: center;
+    }
+
+    /* --- NOVO: Campo de Busca Manual --- */
+    .search-container {
+      display: flex;
+      width: 100%;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .input-code {
+      flex: 1;
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid var(--cor-borda);
+      background-color: rgba(0,0,0,0.2);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      text-transform: uppercase; /* Força maiúsculas visualmente */
+      outline: none;
+      transition: border 0.3s;
+    }
+
+    .input-code:focus {
+      border-color: var(--cor-destaque);
+    }
+
+    .btn-search {
+      padding: 0 20px;
+      background-color: var(--cor-destaque);
+      color: #0e2d26;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      transition: transform 0.1s, background 0.3s;
+    }
+
+    .btn-search:hover {
+      background-color: #e6c200;
+    }
+    
+    .btn-search:active {
+      transform: scale(0.95);
     }
 
     /* Box Principal */
@@ -83,6 +128,7 @@
       text-align: center;
       position: relative;
       overflow: hidden;
+      margin-bottom: 20px;
     }
 
     /* Barra superior colorida */
@@ -106,13 +152,13 @@
       text-align: left;
       margin-top: 20px;
     }
-
+    
     .data-item {
       margin-bottom: 15px;
       border-bottom: 1px solid #1f4239;
       padding-bottom: 8px;
     }
-
+    
     .data-item:last-child { border-bottom: none; }
 
     .data-label {
@@ -122,7 +168,7 @@
       letter-spacing: 1px;
       margin-bottom: 4px;
     }
-
+    
     .data-value {
       color: #fff;
       font-size: 1.1rem;
@@ -185,55 +231,21 @@
 
   <div class="verify-container">
     
-    <!-- Se a imagem não carregar, ela some sem quebrar o layout -->
-    <img src="imagem/logo.png" alt="BJJ Digital" class="logo" onerror="this.style.display='none'">
+    <img src="imagens/logo.png" alt="BJJ Digital" class="logo" onerror="this.style.display='none'">
 
     <h1>Validação de Certificado</h1>
     <p class="subtitle">Sistema de Autenticidade Oficial</p>
-<div style="width: 100%; margin-bottom: 20px;">
-  <input 
-    id="input-manual" 
-    type="text" 
-    placeholder="Digite o código do certificado..." 
-    style="
-      width: 100%; 
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid var(--cor-borda);
-      background: #0b241e;
-      color: #fff;
-      font-size: 1rem;
-      outline: none;
-      text-transform: uppercase;
-    "
-    onkeypress="handleEnter(event)"
-  >
 
-  <button 
-    onclick="verificarManual()" 
-    style="
-      margin-top: 10px;
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      background: var(--cor-borda);
-      font-weight: 600;
-      color: #fff;
-      cursor: pointer;
-      transition: 0.3s;
-    "
-  >
-    Verificar Certificado
-  </button>
-</div>
-    <!-- 1. LOADING -->
-    <div id="loading" class="box" style="border-color: #555;">
+    <div class="search-container">
+      <input type="text" id="input-busca" class="input-code" placeholder="Digite o código (ex: A1B2)" />
+      <button id="btn-buscar" class="btn-search">Buscar</button>
+    </div>
+
+    <div id="loading" class="box hidden" style="border-color: #555;">
       <div class="loading-spinner">⏳</div>
       <p style="color: #ccc;">Consultando base de dados...</p>
     </div>
 
-    <!-- 2. SUCESSO (O que você pediu) -->
     <div id="success-box" class="box hidden">
       <div class="valid-title">✅ Certificado Válido</div>
       
@@ -262,14 +274,12 @@
       </div>
     </div>
 
-    <!-- 3. ERRO (Mantido como estava) -->
     <div id="error-box" class="box error hidden">
       <div class="error-title">❌ Não Encontrado</div>
       <p>O código informado não consta em nossa base de dados oficial.</p>
       <div class="error-code" id="res-codigo-erro"></div>
-      <p style="font-size: 0.8rem; color: #aaa;">Verifique se o link foi digitado corretamente.</p>
+      <p style="font-size: 0.8rem; color: #aaa;">Verifique se o código foi digitado corretamente.</p>
       
-      <!-- Debug para te ajudar a saber se é erro de chave -->
       <p id="debug-msg" style="color: orange; font-size: 0.7rem; margin-top: 10px; display: none;"></p>
     </div>
 
@@ -279,63 +289,69 @@
 
   </div>
 
-  <!-- FIREBASE SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-   
     const firebaseConfig = {
       apiKey: "AIzaSyAZkYYkXkOcXWTDmABwD5XmKWWSibHmrRQ",
       authDomain: "bjj-digital.firebaseapp.com",
       projectId: "bjj-digital",
       storageBucket: "bjj-digital.firebasestorage.app",
-      messagingSenderId: "120230340536", 
+      messagingSenderId: "120230340536",
       appId: "1:120230340536:web:3abed82ebb5b6e952a514d",
-      measurementId: "G-MYHRYD3DD3"	  	 
+      measurementId: "G-MYHRYD3DD3"
     };
 
     // Inicializa
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app, "bjj-digital");
 
-    async function verificar() {
-        // Captura parâmetros da URL (?codigo=XYZ ou ?code=XYZ para garantir)
-        const params = new URLSearchParams(window.location.search);
-        const codigo = params.get("codigo") || params.get("code");
-        
-        const elLoading = document.getElementById("loading");
-        const elSuccess = document.getElementById("success-box");
-        const elError = document.getElementById("error-box");
-        const elDebug = document.getElementById("debug-msg");
+    // Elementos da DOM
+    const elInput = document.getElementById("input-busca");
+    const btnBuscar = document.getElementById("btn-buscar");
+    const elLoading = document.getElementById("loading");
+    const elSuccess = document.getElementById("success-box");
+    const elError = document.getElementById("error-box");
+    const elDebug = document.getElementById("debug-msg");
 
-        if (!codigo) {
-            elLoading.classList.add("hidden");
-            elError.classList.remove("hidden");
-            document.getElementById("res-codigo-erro").innerText = "Nenhum código informado";
+    // Função Principal de Verificação
+    async function verificar(codigoParaVerificar) {
+        // Limpa estados anteriores
+        elSuccess.classList.add("hidden");
+        elError.classList.add("hidden");
+        elDebug.style.display = "none";
+
+        // Se não veio código, alerta simples (validação de campo)
+        if (!codigoParaVerificar) {
+            alert("Por favor, digite um código.");
             return;
         }
 
+        // Mostra Loading
+        elLoading.classList.remove("hidden");
+
+        // Atualiza o input visualmente caso tenha vindo da URL
+        elInput.value = codigoParaVerificar;
+
         try {
-            // Busca no Firestore (Coleção: resultados)
-            const q = query(collection(db, "resultados"), where("codigo_verificacao", "==", codigo));
+            // Busca no Firestore
+            const q = query(collection(db, "resultados"), where("codigo_verificacao", "==", codigoParaVerificar));
             const querySnapshot = await getDocs(q);
 
             elLoading.classList.add("hidden");
 
             if (!querySnapshot.empty) {
-                // SUCESSO: Encontrou o documento
+                // SUCESSO
                 const doc = querySnapshot.docs[0].data();
                 
-                // Preenche os dados
                 document.getElementById("res-nome").innerText = doc.usuario ? doc.usuario.toUpperCase() : "N/A";
                 document.getElementById("res-faixa").innerText = doc.faixa ? doc.faixa.toUpperCase() : "N/A";
-                document.getElementById("res-codigo").innerText = codigo;
+                document.getElementById("res-codigo").innerText = codigoParaVerificar;
                 
                 // Formata data
                 if(doc.data && doc.data.seconds) {
                     const date = new Date(doc.data.seconds * 1000);
-                    // Formata dia/mês/ano
                     document.getElementById("res-data").innerText = date.toLocaleDateString('pt-BR');
                 } else {
                     document.getElementById("res-data").innerText = "-";
@@ -343,44 +359,51 @@
 
                 elSuccess.classList.remove("hidden");
             } else {
-                // ERRO: Não achou no banco
-                document.getElementById("res-codigo-erro").innerText = codigo;
+                // ERRO
+                document.getElementById("res-codigo-erro").innerText = codigoParaVerificar;
                 elError.classList.remove("hidden");
             }
 
         } catch (e) {
-            // ERRO TÉCNICO (Provavelmente falta de chave ou permissão)
             console.error("Erro de conexão:", e);
             elLoading.classList.add("hidden");
-            document.getElementById("res-codigo-erro").innerText = codigo;
+            document.getElementById("res-codigo-erro").innerText = codigoParaVerificar;
             elError.classList.remove("hidden");
             
-            // Mostra mensagem técnica discreta para ajudar no debug
             elDebug.style.display = "block";
             elDebug.innerText = "Erro técnico: " + e.message;
         }
     }
-window.handleEnter = function(e) {
-  if (e.key === "Enter") verificarManual();
-}
 
-// Função para capturar o código digitado
-window.verificarManual = function() {
-  const input = document.getElementById("input-manual");
-  const codigo = input.value.trim().toUpperCase();
+    // --- Lógica de Inicialização ---
 
-  if (!codigo) {
-    alert("Digite um código para verificar.");
-    return;
-  }
+    // 1. Ao clicar no botão
+    btnBuscar.addEventListener("click", () => {
+        const codigoDigitado = elInput.value.trim();
+        verificar(codigoDigitado);
+    });
 
-  // Atualiza a URL para manter histórico e permitir compartilhamento
-  const newUrl = `${window.location.pathname}?codigo=${codigo}`;
-  window.history.pushState({}, '', newUrl);
+    // 2. Ao apertar ENTER no input
+    elInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            const codigoDigitado = elInput.value.trim();
+            verificar(codigoDigitado);
+        }
+    });
 
-  verificar(); // chama a função original
-}
+    // 3. Ao carregar a página: verifica se tem código na URL
+    window.onload = () => {
+        const params = new URLSearchParams(window.location.search);
+        const codigoUrl = params.get("codigo") || params.get("code");
+
+        if (codigoUrl) {
+            // Se tem URL, verifica direto
+            verificar(codigoUrl);
+        } else {
+            // Se não tem URL, não faz nada (fica esperando o usuário digitar)
+            elLoading.classList.add("hidden");
+        }
+    }
   </script>
 </body>
 </html>
-
