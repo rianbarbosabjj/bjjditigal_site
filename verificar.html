@@ -1,8 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="imagens/logo.png">
   <title>Verificação de Certificado - BJJ Digital</title>
   
   <!-- Fonte Poppins -->
@@ -38,52 +40,39 @@
       padding: 20px;
     }
 
-    .verify-container { width: 100%; max-width: 500px; display: flex; flex-direction: column; align-items: center; }
-    
-    .logo { width: 140px; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
-    
-    h1 { color: var(--cor-destaque); font-size: 1.5rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; text-align: center; }
-    .subtitle { font-size: 0.9rem; color: #a0c0b5; margin-bottom: 30px; text-align: center; }
-
-    /* --- ÁREA DE BUSCA MANUAL --- */
-    .search-box {
-        background-color: rgba(0, 0, 0, 0.3);
-        border: 1px solid var(--cor-borda);
-        border-radius: 12px;
-        padding: 15px;
+    .verify-container {
         width: 100%;
-        margin-bottom: 20px;
+        max-width: 500px;
         display: flex;
-        gap: 10px;
+        flex-direction: column;
+        align-items: center;
     }
-    
-    .search-input {
-        flex: 1;
-        background: #091f1a;
-        border: 1px solid #444;
-        border-radius: 8px;
-        padding: 10px;
-        color: #fff;
-        font-family: monospace;
-        font-size: 1rem;
-        outline: none;
-        text-transform: uppercase;
-    }
-    .search-input:focus { border-color: var(--cor-destaque); }
-    
-    .search-btn {
-        background: var(--cor-borda);
-        color: white;
-        border: none;
-        padding: 0 20px;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-    .search-btn:hover { background: #056853; }
 
-    /* --- CARTÃO --- */
+    /* Logo */
+    .logo {
+      width: 140px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    }
+
+    /* Títulos */
+    h1 { 
+      color: var(--cor-destaque); 
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #a0c0b5;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    /* Box Principal */
     .box {
       background-color: var(--cor-card);
       border: 1px solid var(--cor-borda);
@@ -96,80 +85,162 @@
       overflow: hidden;
     }
 
-    .box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--cor-borda), var(--cor-destaque), var(--cor-borda)); }
-    
-    .valid-icon { font-size: 4rem; margin-bottom: 15px; display: block; animation: popIn 0.5s; }
-    .status-text { font-size: 1.5rem; color: #4CAF50; font-weight: 700; margin-bottom: 25px; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-    
-    .info-group { margin-bottom: 15px; border-bottom: 1px solid #1f4239; padding-bottom: 10px; text-align: left; }
-    .info-group:last-child { border-bottom: none; }
-    
-    .label { color: #aaa; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-    .value { color: #fff; font-size: 1.1rem; font-weight: 600; word-wrap: break-word; }
-    .highlight { color: var(--cor-destaque); font-size: 1.3rem; }
+    /* Barra superior colorida */
+    .box::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--cor-borda), var(--cor-destaque), var(--cor-borda));
+    }
 
-    .codigo-container { margin-top: 25px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border: 1px dashed #444; text-align: left; }
-    .codigo { color: var(--cor-destaque); font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.1em; word-break: break-all; }
+    /* Estado de Sucesso */
+    .valid-title {
+      color: #4CAF50;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
 
-    /* ERRO */
-    .box.error { border-color: var(--cor-erro); background-color: var(--cor-erro-bg); }
-    .box.error::before { background: var(--cor-erro); }
-    .error-title { color: var(--cor-erro); font-size: 1.5rem; font-weight: bold; margin-bottom: 15px; }
-    .error-code { font-family: monospace; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; color: #ffaaaa; margin: 15px 0; display: inline-block; border: 1px dashed var(--cor-erro); }
+    /* Lista de Dados */
+    .data-list {
+      text-align: left;
+      margin-top: 20px;
+    }
 
-    .loading-spinner { font-size: 2rem; animation: spin 1s infinite linear; margin-bottom: 15px; }
+    .data-item {
+      margin-bottom: 15px;
+      border-bottom: 1px solid #1f4239;
+      padding-bottom: 8px;
+    }
+
+    .data-item:last-child { border-bottom: none; }
+
+    .data-label {
+      color: #aaa;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .data-value {
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      word-wrap: break-word;
+    }
+
+    .highlight-value {
+      color: var(--cor-destaque);
+      font-size: 1.3rem;
+    }
+
+    /* Estado de Erro */
+    .box.error {
+      border-color: var(--cor-erro);
+      background-color: var(--cor-erro-bg);
+    }
+    
+    .box.error::before {
+      background: var(--cor-erro);
+    }
+
+    .error-title {
+      color: var(--cor-erro);
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .error-code {
+      font-family: monospace;
+      background: rgba(0,0,0,0.3);
+      padding: 10px;
+      border-radius: 5px;
+      color: #ffaaaa;
+      margin: 15px 0;
+      display: inline-block;
+      border: 1px dashed var(--cor-erro);
+    }
+
+    /* Loading */
+    .loading-spinner {
+      font-size: 2rem;
+      animation: spin 1s infinite linear;
+      margin-bottom: 15px;
+    }
+    
     @keyframes spin { 100% { transform: rotate(360deg); } }
-    @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
     .hidden { display: none; }
-    footer { margin-top: 40px; font-size: 0.8rem; color: #5c7a70; }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.8rem;
+      color: #5c7a70;
+    }
   </style>
 </head>
 <body>
 
   <div class="verify-container">
-    <img src="imagens/logo.png" alt="BJJ Digital Logo" class="logo" onerror="this.style.display='none'">
+    
+    <!-- Se a imagem não carregar, ela some sem quebrar o layout -->
+    <img src="imagem/logo.png" alt="BJJ Digital" class="logo" onerror="this.style.display='none'">
+
     <h1>Validação de Certificado</h1>
     <p class="subtitle">Sistema de Autenticidade Oficial</p>
 
-    <!-- BUSCA MANUAL -->
-    <div class="search-box">
-        <input type="text" id="input-codigo" class="search-input" placeholder="Digite o código..." onkeypress="handleEnter(event)">
-        <button class="search-btn" onclick="verificarManual()">Verificar</button>
-    </div>
-
     <!-- 1. LOADING -->
-    <div id="loading" class="box hidden" style="border-color: #555;">
+    <div id="loading" class="box" style="border-color: #555;">
       <div class="loading-spinner">⏳</div>
       <p style="color: #ccc;">Consultando base de dados...</p>
     </div>
 
-    <!-- 2. SUCESSO -->
+    <!-- 2. SUCESSO (O que você pediu) -->
     <div id="success-box" class="box hidden">
-      <div class="valid-title status-text">✅ Certificado Válido</div>
+      <div class="valid-title">✅ Certificado Válido</div>
       
-      <div class="info-group"><div class="label">Aluno</div><div class="value" id="res-nome"></div></div>
-      <div class="info-group"><div class="label">Aprovado a Faixa</div><div class="value highlight" id="res-faixa"></div></div>
-      <div style="display: flex; justify-content: space-between;">
-         <div style="text-align: left;"><div class="label">Data</div><div class="value" id="res-data"></div></div>
-         <div style="text-align: right;"><div class="label">Nota</div><div class="value" id="res-nota"></div></div>
-      </div>
-      <div class="codigo-container">
-         <div class="label" style="margin-bottom:5px;">Código</div>
-         <div class="codigo" id="res-codigo"></div>
+      <div class="data-list">
+        
+        <div class="data-item">
+          <div class="data-label">Nome do Aluno</div>
+          <div class="data-value" id="res-nome"></div>
+        </div>
+
+        <div class="data-item">
+          <div class="data-label">Aprovado a Faixa</div>
+          <div class="data-value highlight-value" id="res-faixa"></div>
+        </div>
+
+        <div class="data-item">
+          <div class="data-label">Data do Exame</div>
+          <div class="data-value" id="res-data"></div>
+        </div>
+
+        <div class="data-item">
+          <div class="data-label">Código</div>
+          <div class="data-value" id="res-codigo" style="font-family: monospace; letter-spacing: 1px;"></div>
+        </div>
+
       </div>
     </div>
 
-    <!-- 3. ERRO -->
+    <!-- 3. ERRO (Mantido como estava) -->
     <div id="error-box" class="box error hidden">
       <div class="error-title">❌ Não Encontrado</div>
       <p>O código informado não consta em nossa base de dados oficial.</p>
       <div class="error-code" id="res-codigo-erro"></div>
-      <p style="font-size: 0.8rem; color: #aaa;">Verifique se o código foi digitado corretamente.</p>
+      <p style="font-size: 0.8rem; color: #aaa;">Verifique se o link foi digitado corretamente.</p>
+      
+      <!-- Debug para te ajudar a saber se é erro de chave -->
       <p id="debug-msg" style="color: orange; font-size: 0.7rem; margin-top: 10px; display: none;"></p>
     </div>
 
-    <footer>&copy; 2025 BJJ Digital Platform</footer>
+    <footer>
+      &copy; 2025 BJJ Digital Platform
+    </footer>
+
   </div>
 
   <!-- FIREBASE SDK -->
@@ -259,5 +330,3 @@
   </script>
 </body>
 </html>
-
-
