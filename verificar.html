@@ -172,117 +172,92 @@
     <footer>&copy; 2025 BJJ Digital Platform</footer>
   </div>
 
-<script type="module">
+  <!-- FIREBASE SDK -->
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // 🔥 CONFIGURAÇÃO CERTA
+   
     const firebaseConfig = {
       apiKey: "AIzaSyAZkYYkXkOcXWTDmABwD5XmKWWSibHmrRQ",
       authDomain: "bjj-digital.firebaseapp.com",
       projectId: "bjj-digital",
       storageBucket: "bjj-digital.firebasestorage.app",
-      messagingSenderId: "120230340536",
+      messagingSenderId: "120230340536", 
       appId: "1:120230340536:web:3abed82ebb5b6e952a514d",
-      measurementId: "G-MYHRYD3DD3"
+      measurementId: "G-MYHRYD3DD3"	  	 
     };
 
+    // Inicializa
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    const db = getFirestore(app, "bjj-digital");
 
-    // 📌 Função exposta para o botão
-    window.verificarManual = function () {
-        const input = document.getElementById("input-codigo");
-        const codigo = input.value.trim().toUpperCase();
-
-        if (codigo.length < 3) {
-            alert("Código inválido. Digite pelo menos 3 caracteres.");
-            return;
-        }
-
-        const newUrl = `${window.location.pathname}?codigo=${codigo}`;
-        window.history.pushState({}, '', newUrl);
-
-        buscarNoBanco(codigo);
-    };
-
-    // Permite Enter
-    window.handleEnter = function (e) {
-        if (e.key === "Enter") window.verificarManual();
-    };
-
-    // 🚀 AUTO-CARREGAMENTO SE O CÓDIGO ESTIVER NA URL
-    async function init() {
+    async function verificar() {
+        // Captura parâmetros da URL (?codigo=XYZ ou ?code=XYZ para garantir)
         const params = new URLSearchParams(window.location.search);
-        const codigoUrl = params.get("codigo") || params.get("code");
-
-        if (codigoUrl) {
-            document.getElementById("input-codigo").value = codigoUrl.toUpperCase();
-            buscarNoBanco(codigoUrl.toUpperCase());
-        }
-    }
-
-    // 🔍 FUNÇÃO PRINCIPAL DE BUSCA
-    async function buscarNoBanco(codigo) {
+        const codigo = params.get("codigo") || params.get("code");
+        
         const elLoading = document.getElementById("loading");
         const elSuccess = document.getElementById("success-box");
         const elError = document.getElementById("error-box");
         const elDebug = document.getElementById("debug-msg");
 
-        elLoading.classList.remove("hidden");
-        elSuccess.classList.add("hidden");
-        elError.classList.add("hidden");
-        elDebug.style.display = "none";
+        if (!codigo) {
+            elLoading.classList.add("hidden");
+            elError.classList.remove("hidden");
+            document.getElementById("res-codigo-erro").innerText = "Nenhum código informado";
+            return;
+        }
 
         try {
-            // Tolerância ao nome do campo: codigo ou codigo_verificacao
-            const q1 = query(collection(db, "resultados"), where("codigo", "==", codigo), limit(1));
-            const q2 = query(collection(db, "resultados"), where("codigo_verificacao", "==", codigo), limit(1));
-
-            let querySnapshot = await getDocs(q1);
-            if (querySnapshot.empty) querySnapshot = await getDocs(q2);
+            // Busca no Firestore (Coleção: resultados)
+            const q = query(collection(db, "resultados"), where("codigo_verificacao", "==", codigo));
+            const querySnapshot = await getDocs(q);
 
             elLoading.classList.add("hidden");
 
             if (!querySnapshot.empty) {
+                // SUCESSO: Encontrou o documento
                 const doc = querySnapshot.docs[0].data();
-
-                document.getElementById("res-nome").innerText =
-                    (doc.usuario || doc.nome || "NÃO INFORMADO").toUpperCase();
-
-                document.getElementById("res-faixa").innerText =
-                    (doc.faixa || doc.graduacao || "SEM INFORMAÇÃO").toUpperCase();
-
-                document.getElementById("res-nota").innerText =
-                    doc.pontuacao ? doc.pontuacao + "%" : "--";
-
+                
+                // Preenche os dados
+                document.getElementById("res-nome").innerText = doc.usuario ? doc.usuario.toUpperCase() : "N/A";
+                document.getElementById("res-faixa").innerText = doc.faixa ? doc.faixa.toUpperCase() : "N/A";
                 document.getElementById("res-codigo").innerText = codigo;
-
-                if (doc.data?.seconds) {
+                
+                // Formata data
+                if(doc.data && doc.data.seconds) {
                     const date = new Date(doc.data.seconds * 1000);
-                    document.getElementById("res-data").innerText = date.toLocaleDateString("pt-BR");
+                    // Formata dia/mês/ano
+                    document.getElementById("res-data").innerText = date.toLocaleDateString('pt-BR');
                 } else {
-                    document.getElementById("res-data").innerText = "--";
+                    document.getElementById("res-data").innerText = "-";
                 }
 
                 elSuccess.classList.remove("hidden");
             } else {
+                // ERRO: Não achou no banco
                 document.getElementById("res-codigo-erro").innerText = codigo;
                 elError.classList.remove("hidden");
             }
-        } catch (e) {
-            console.error("🔥 ERRO FIREBASE:", e.message);
 
+        } catch (e) {
+            // ERRO TÉCNICO (Provavelmente falta de chave ou permissão)
+            console.error("Erro de conexão:", e);
             elLoading.classList.add("hidden");
-            document.getElementById("res-codigo-erro").innerText = "Erro de conexão";
-            elDebug.style.display = "block";
-            elDebug.innerText = "Erro: " + e.message;
+            document.getElementById("res-codigo-erro").innerText = codigo;
             elError.classList.remove("hidden");
+            
+            // Mostra mensagem técnica discreta para ajudar no debug
+            elDebug.style.display = "block";
+            elDebug.innerText = "Erro técnico: " + e.message;
         }
     }
 
-    init();
-</script>
+    // Executa ao abrir
+    verificar();
+  </script>
 </body>
 </html>
+
 
