@@ -190,7 +190,43 @@
 
     <h1>Validação de Certificado</h1>
     <p class="subtitle">Sistema de Autenticidade Oficial</p>
+<div style="width: 100%; margin-bottom: 20px;">
+  <input 
+    id="input-manual" 
+    type="text" 
+    placeholder="Digite o código do certificado..." 
+    style="
+      width: 100%; 
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--cor-borda);
+      background: #0b241e;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      text-transform: uppercase;
+    "
+    onkeypress="handleEnter(event)"
+  >
 
+  <button 
+    onclick="verificarManual()" 
+    style="
+      margin-top: 10px;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: var(--cor-borda);
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    "
+  >
+    Verificar Certificado
+  </button>
+</div>
     <!-- 1. LOADING -->
     <div id="loading" class="box" style="border-color: #555;">
       <div class="loading-spinner">⏳</div>
@@ -324,9 +360,27 @@
             elDebug.innerText = "Erro técnico: " + e.message;
         }
     }
+window.handleEnter = function(e) {
+  if (e.key === "Enter") verificarManual();
+}
 
-    // Executa ao abrir
-    verificar();
+// Função para capturar o código digitado
+window.verificarManual = function() {
+  const input = document.getElementById("input-manual");
+  const codigo = input.value.trim().toUpperCase();
+
+  if (!codigo) {
+    alert("Digite um código para verificar.");
+    return;
+  }
+
+  // Atualiza a URL para manter histórico e permitir compartilhamento
+  const newUrl = `${window.location.pathname}?codigo=${codigo}`;
+  window.history.pushState({}, '', newUrl);
+
+  verificar(); // chama a função original
+}
   </script>
 </body>
 </html>
+
