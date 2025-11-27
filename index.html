@@ -17,7 +17,6 @@
       --cor-destaque: #FFD700; /* Dourado */
       --cor-texto: #ffffff;
       --cor-texto-secundario: #a0c0b5;
-      --cor-botao-hover: #e6c200;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,7 +33,7 @@
       justify-content: center;
       text-align: center;
       padding: 20px;
-      overflow: hidden; /* Evita scroll desnecessário */
+      overflow: hidden;
     }
 
     /* Container Central */
@@ -73,29 +72,6 @@
       line-height: 1.6;
     }
 
-    /* Botão Principal */
-    .btn {
-      display: inline-block;
-      background-color: transparent;
-      color: var(--cor-destaque);
-      border: 2px solid var(--cor-destaque);
-      padding: 12px 30px;
-      border-radius: 50px;
-      font-weight: 600;
-      text-transform: uppercase;
-      text-decoration: none;
-      letter-spacing: 1px;
-      transition: all 0.3s ease;
-      font-size: 0.9rem;
-    }
-
-    .btn:hover {
-      background-color: var(--cor-destaque);
-      color: var(--cor-fundo);
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-      transform: translateY(-3px);
-    }
-
     /* Footer Fixo */
     footer {
       position: absolute;
@@ -131,8 +107,6 @@
     
     <h1>BJJ <span class="highlight">DIGITAL</span></h1>
     <p>Estamos no tatame preparando uma nova experiência para você.<br>A evolução do Jiu-Jitsu Digital está chegando.</p>
-
-    <a href="verificar.html" class="btn">Validar Certificado</a>
   </div>
 
   <footer>
