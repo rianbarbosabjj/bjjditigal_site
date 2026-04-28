@@ -15,7 +15,7 @@
     :root {
       --cor-fundo: #0B1120;
       --cor-card: #0F172A; 
-      --cor-destaque: #D4AF37; /* Default Premium */
+      --cor-destaque: #D4AF37; 
       --cor-tema-atual: #D4AF37; 
       --cor-borda-atual: #334155; 
       --bg-grad-atual: #1E293B;
@@ -30,7 +30,6 @@
       position: relative; overflow-x: hidden;
     }
 
-    /* Glow de Fundo Animado */
     #glow-bg {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
       width: 80vw; height: 80vw; max-width: 600px; max-height: 600px;
@@ -40,7 +39,6 @@
 
     .main-container { z-index: 10; width: 100%; max-width: 450px; padding: 20px; display: flex; flex-direction: column; align-items: center;}
 
-    /* Input Customizado */
     .input-code {
       width: 100%; padding: 18px; border-radius: 16px; border: 1px solid var(--cor-borda-atual);
       background-color: rgba(15, 23, 42, 0.8); color: #fff; font-size: 1rem; text-align: center;
@@ -55,7 +53,6 @@
     }
     .btn-search:active { transform: scale(0.98); }
 
-    /* Box Container */
     .box {
       background-color: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px);
       border: 1px solid var(--cor-borda-atual); border-radius: 24px; padding: 35px 25px; 
@@ -64,10 +61,10 @@
     }
     .box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--cor-tema-atual); transition: background 0.4s ease; }
 
-    /* Loading */
     .spinner { width: 45px; height: 45px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--cor-tema-atual); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px auto; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
+    /* Força o ocultamento ignorando o Flex */
     .hidden { display: none !important; }
   </style>
 </head>
@@ -188,14 +185,20 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const elInput = document.getElementById("input-busca");
     const elManual = document.getElementById("estado-busca-manual");
     const elLoading = document.getElementById("estado-loading");
     const elCart = document.getElementById("estado-sucesso-cart");
     const elCert = document.getElementById("estado-sucesso-cert");
     const elErro = document.getElementById("estado-erro");
 
-    // APLICADOR DE TEMAS DINÂMICOS
+    // FUNÇÃO ESCUDO: Esconde tudo e remove a classe flex (evitando bugs do Tailwind)
+    function esconderTudo() {
+        [elManual, elLoading, elCart, elCert, elErro].forEach(el => {
+            el.classList.add("hidden");
+            el.classList.remove("flex");
+        });
+    }
+
     function setTema(cor, rgba) {
         document.documentElement.style.setProperty('--cor-tema-atual', cor);
         document.getElementById('glow-bg').style.backgroundColor = rgba;
@@ -203,54 +206,54 @@
         document.querySelector('.box::before').style.background = cor;
     }
 
-    // BUSCA INTELIGENTE CENTRALIZADA
+    // O CÉREBRO DA BUSCA INTELIGENTE
     async function verificar(codigoOriginal, tipoForcado = null) {
         if (!codigoOriginal) { alert("Por favor, digite uma chave válida."); return; }
         
         const codigo = codigoOriginal.trim();
         const codigoUpper = codigo.toUpperCase();
         
-        elManual.classList.add("hidden");
+        esconderTudo();
         elLoading.classList.remove("hidden");
         elLoading.classList.add("flex");
 
         try {
-            // 1. SE FOI FORÇADO VIA URL (?mat= ou ?cert=) - Preserva Links Antigos do BJJ Manager
-            if (tipoForcado === 'mat') {
-                return await validarCarteirinha(codigo);
-            } else if (tipoForcado === 'cert') {
-                return await validarDiplomaManager(codigo);
-            }
+            // 1. FORÇADO VIA URL (Sistemas Antigos)
+            if (tipoForcado === 'mat') return await buscarCarteirinha(codigo);
+            if (tipoForcado === 'cert') return await buscarDiploma(codigo);
 
-            // 2. BUSCA INTELIGENTE (O Usuário apenas digitou na barra)
-            
-            // É um HASH do BJJ EXAMS?
+            // 2. BUSCA INTELIGENTE HASH (BJJ EXAMS)
             if (codigoUpper.startsWith("BJJEXAMES-") || codigoUpper.startsWith("BJJ")) {
-                const docRef = doc(db, "certificados", codigoUpper);
-                const docSnap = await getDoc(docRef);
+                const docSnap = await getDoc(doc(db, "certificados", codigoUpper));
                 if (docSnap.exists()) return preencherCertificadoExams(docSnap.data(), codigoUpper);
                 
-                // Fallback legado BJJ Exams
                 const qRes = query(collection(db, "resultados"), where("codigo_verificacao", "==", codigoUpper));
                 const snapRes = await getDocs(qRes);
                 if (!snapRes.empty) return preencherCertificadoExamsLegado(snapRes.docs[0].data(), codigoUpper);
             }
 
-            // É uma Matrícula ou Serial? Procura em Alunos primeiro
-            const qMat = query(collection(db, "alunos"), where("matricula", "==", codigo));
-            const snapMat = await getDocs(qMat);
-            if (!snapMat.empty) return preencherCarteirinha(snapMat.docs[0].data(), codigo);
+            // 3. BUSCA CARTEIRINHA (String e Number)
+            let snapMat = await getDocs(query(collection(db, "alunos"), where("matricula", "==", codigo)));
+            if (!snapMat.empty) return await preencherCarteirinha(snapMat.docs[0].data(), codigo);
             
-            // Tentativa por Document ID de Aluno
+            if (!isNaN(codigo)) {
+                snapMat = await getDocs(query(collection(db, "alunos"), where("matricula", "==", Number(codigo))));
+                if (!snapMat.empty) return await preencherCarteirinha(snapMat.docs[0].data(), codigo);
+            }
+            
             const dAluno = await getDoc(doc(db, "alunos", codigo));
-            if(dAluno.exists()) return preencherCarteirinha(dAluno.data(), codigo);
+            if(dAluno.exists()) return await preencherCarteirinha(dAluno.data(), codigo);
 
-            // Não achou Aluno, tenta em Certificados (Diplomas Manager)
-            const qCert = query(collection(db, "certificados"), where("numero_serie", "==", codigo));
-            const snapCert = await getDocs(qCert);
-            if (!snapCert.empty) return await validarDiplomaManager(codigo); // Chama a função completa de Diploma
+            // 4. BUSCA DIPLOMAS MANAGER (String e Number)
+            let snapCert = await getDocs(query(collection(db, "certificados"), where("numero_serie", "==", codigo)));
+            if (!snapCert.empty) return await preencherDiplomaManager(snapCert.docs[0].data(), codigo);
 
-            // Se o código chegou até aqui, ele NÃO EXISTE no ecossistema
+            if (!isNaN(codigo)) {
+                snapCert = await getDocs(query(collection(db, "certificados"), where("numero_serie", "==", Number(codigo))));
+                if (!snapCert.empty) return await preencherDiplomaManager(snapCert.docs[0].data(), codigo);
+            }
+
+            // Se nada funcionar
             mostrarErro(codigo);
 
         } catch (e) {
@@ -259,20 +262,31 @@
         }
     }
 
-    // ==========================================
-    // RENDERIZAÇÃO: CARTEIRINHA DE ATLETA (MANAGER)
-    // ==========================================
-    async function validarCarteirinha(matricula) {
-        let alunoData = null;
-        const q = query(collection(db, "alunos"), where("matricula", "==", matricula));
-        const snap = await getDocs(q);
-        if(!snap.empty) { alunoData = snap.docs[0].data(); } 
-        else {
-            const d = await getDoc(doc(db, "alunos", matricula));
-            if(d.exists()) alunoData = d.data();
+    async function buscarCarteirinha(codigo) {
+        let snap = await getDocs(query(collection(db, "alunos"), where("matricula", "==", codigo)));
+        if (!snap.empty) return await preencherCarteirinha(snap.docs[0].data(), codigo);
+        
+        if (!isNaN(codigo)) {
+            snap = await getDocs(query(collection(db, "alunos"), where("matricula", "==", Number(codigo))));
+            if (!snap.empty) return await preencherCarteirinha(snap.docs[0].data(), codigo);
         }
-        if(alunoData) preencherCarteirinha(alunoData, matricula);
-        else mostrarErro(matricula);
+        
+        const d = await getDoc(doc(db, "alunos", codigo));
+        if(d.exists()) return await preencherCarteirinha(d.data(), codigo);
+        
+        mostrarErro(codigo);
+    }
+
+    async function buscarDiploma(codigo) {
+        let snap = await getDocs(query(collection(db, "certificados"), where("numero_serie", "==", codigo)));
+        if (!snap.empty) return await preencherDiplomaManager(snap.docs[0].data(), codigo);
+        
+        if (!isNaN(codigo)) {
+            snap = await getDocs(query(collection(db, "certificados"), where("numero_serie", "==", Number(codigo))));
+            if (!snap.empty) return await preencherDiplomaManager(snap.docs[0].data(), codigo);
+        }
+        
+        mostrarErro(codigo);
     }
 
     async function preencherCarteirinha(alunoData, matricula) {
@@ -303,21 +317,13 @@
             document.getElementById('val-foto-fallback').innerText = (alunoData.nome ? alunoData.nome.charAt(0).toUpperCase() : "?");
         }
 
-        elLoading.classList.add('hidden');
+        esconderTudo();
         elCart.classList.remove('hidden'); elCart.classList.add('flex');
     }
 
-    // ==========================================
-    // RENDERIZAÇÃO: DIPLOMA (MANAGER)
-    // ==========================================
-    async function validarDiplomaManager(serial) {
-        const q = query(collection(db, "certificados"), where("numero_serie", "==", serial));
-        const snap = await getDocs(q);
-        if (snap.empty) return mostrarErro(serial);
-
+    async function preencherDiplomaManager(certData, serial) {
         setTema('#3b82f6', 'rgba(59, 130, 246, 0.1)'); // Blue Oficial
-        const certData = snap.docs[0].data();
-
+        
         document.getElementById('cert-titulo-main').innerText = "Diploma Válido";
         document.getElementById('cert-subtitulo-main').innerText = "Graduação Autêntica";
         document.getElementById('cert-subtitulo-main').className = "text-[9px] text-blue-400 font-bold uppercase tracking-widest mb-8";
@@ -328,9 +334,14 @@
         document.getElementById('cert-faixa-concedida').className = "text-[11px] font-bold text-blue-500 uppercase tracking-widest mb-6";
         document.getElementById('cert-serial').innerText = "#" + serial;
 
+        // Correção de Data
         if (certData.data_cerimonia) {
-            const p = certData.data_cerimonia.split('-');
-            document.getElementById('cert-data-cerimonia').innerText = p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : certData.data_cerimonia;
+            if (typeof certData.data_cerimonia === 'string') {
+                const p = certData.data_cerimonia.split('-');
+                document.getElementById('cert-data-cerimonia').innerText = p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : certData.data_cerimonia;
+            } else if (certData.data_cerimonia.seconds) {
+                document.getElementById('cert-data-cerimonia').innerText = new Date(certData.data_cerimonia.seconds * 1000).toLocaleDateString('pt-BR');
+            } else { document.getElementById('cert-data-cerimonia').innerText = "--/--/----"; }
         } else { document.getElementById('cert-data-cerimonia').innerText = "--/--/----"; }
 
         if (certData.equipe_id) {
@@ -344,9 +355,8 @@
                     document.getElementById('cert-equipe-logo').classList.remove('hidden');
                 }
             } else { document.getElementById('cert-equipe').innerText = "EQUIPE NÃO ENCONTRADA"; }
-        }
+        } else { document.getElementById('cert-equipe').innerText = "EQUIPE NÃO REGISTRADA"; }
 
-        // Bloco Extra para Assinaturas
         const extra = document.getElementById('cert-extra-block');
         extra.classList.remove('hidden');
         extra.innerHTML = `
@@ -355,15 +365,12 @@
                 <div><p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-0.5">Assinatura Prof.</p><p class="text-[10px] font-black text-slate-300 uppercase">${certData.prof_direto || "--"}</p></div>
             </div>`;
 
-        elLoading.classList.add('hidden');
+        esconderTudo();
         elCert.classList.remove('hidden'); elCert.classList.add('flex');
     }
 
-    // ==========================================
-    // RENDERIZAÇÃO: CERTIFICADO DE EXAMES EAD
-    // ==========================================
     function preencherCertificadoExams(data, hash) {
-        setTema('#10B981', 'rgba(16, 185, 129, 0.1)'); // Emerald Oficial
+        setTema('#10B981', 'rgba(16, 185, 129, 0.1)'); // Emerald
         
         document.getElementById('cert-titulo-main').innerText = "Certificado Válido";
         document.getElementById('cert-subtitulo-main').innerText = "Aprovação em Exame Teórico EAD";
@@ -381,19 +388,20 @@
             document.getElementById("cert-data-cerimonia").innerText = date.toLocaleDateString('pt-BR');
         } else { document.getElementById("cert-data-cerimonia").innerText = "-"; }
 
-        // Bloco Extra para Nota EAD
         if(data.nota_final !== undefined) {
             const extra = document.getElementById('cert-extra-block');
             extra.classList.remove('hidden');
             extra.innerHTML = `<div><p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-0.5">Nota de Aprovação EAD</p><p class="text-sm font-black text-emerald-400 uppercase">${data.nota_final}% de Acertos</p></div>`;
+        } else {
+            document.getElementById('cert-extra-block').classList.add('hidden');
         }
 
-        elLoading.classList.add("hidden");
+        esconderTudo();
         elCert.classList.remove("hidden"); elCert.classList.add("flex");
     }
 
     function preencherCertificadoExamsLegado(data, hash) {
-        setTema('#10B981', 'rgba(16, 185, 129, 0.1)'); // Emerald Oficial
+        setTema('#10B981', 'rgba(16, 185, 129, 0.1)'); // Emerald
         document.getElementById('cert-titulo-main').innerText = "Certificado Válido (Legado)";
         document.getElementById('cert-subtitulo-main').innerText = "Aprovação em Exame Antigo";
         document.getElementById('cert-subtitulo-main').className = "text-[9px] text-emerald-400 font-bold uppercase tracking-widest mb-8";
@@ -409,17 +417,16 @@
             const date = new Date(data.data.seconds * 1000);
             document.getElementById("cert-data-cerimonia").innerText = date.toLocaleDateString('pt-BR');
         } else { document.getElementById("cert-data-cerimonia").innerText = "-"; }
+        
+        document.getElementById('cert-extra-block').classList.add('hidden');
 
-        elLoading.classList.add("hidden");
+        esconderTudo();
         elCert.classList.remove("hidden"); elCert.classList.add("flex");
     }
 
-    // ==========================================
-    // FLUXOS AUXILIARES
-    // ==========================================
     function mostrarErro(codigo) {
         setTema('#F43F5E', 'rgba(244, 63, 94, 0.05)'); // Rose
-        elLoading.classList.add('hidden');
+        esconderTudo();
         document.getElementById('erro-codigo-mostrado').innerText = codigo || "CÓDIGO VAZIO";
         elErro.classList.remove('hidden'); elErro.classList.add('flex');
     }
@@ -437,8 +444,7 @@
         else if (certificadoUrl) verificar(certificadoUrl, 'cert');
         else if (hashUrl) verificar(hashUrl);
         else {
-            // Nenhum parâmetro = Aguarda digitação manual
-            elLoading.classList.add("hidden");
+            esconderTudo();
             elManual.classList.remove("hidden");
             elManual.classList.add("flex");
         }
