@@ -13,13 +13,13 @@
   <style>
     /* Design System BJJ Digital (Base Premium) */
     :root {
-      --cor-fundo: #0B1120; /* Darkbg */
-      --cor-card: #0F172A;  /* Panelbg */
+      --cor-fundo: #0B1120;
+      --cor-card: #0F172A; 
       --cor-texto: #FFFFFF;
       --cor-destaque: #D4AF37; /* Ouro Rico */
       
       /* Cores Dinâmicas dos Sistemas */
-      --cor-tema-atual: #D4AF37; /* Default Gold */
+      --cor-tema-atual: #D4AF37; 
       --cor-borda-atual: #334155; 
       --bg-grad-atual: #1E293B;
 
@@ -36,82 +36,112 @@
       background-image: radial-gradient(circle at 50% 0%, var(--bg-grad-atual) 0%, var(--cor-fundo) 80%);
       color: var(--cor-texto);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      min-height: 100vh; padding: 20px;
+      min-height: 100vh; padding: 15px;
       transition: background-image 0.5s ease;
     }
 
     .verify-container { width: 100%; max-width: 500px; display: flex; flex-direction: column; align-items: center; }
 
     /* Logo */
-    .logo { width: 140px; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); transition: all 0.3s; }
+    .logo { width: 120px; margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); transition: all 0.3s; }
+    @media (min-width: 480px) { .logo { width: 140px; } }
 
     /* Títulos */
-    h1 { color: var(--cor-texto); font-size: 1.5rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; text-align: center; font-weight: 900;}
-    .subtitle { font-size: 0.9rem; color: #94A3B8; margin-bottom: 30px; text-align: center; text-transform: uppercase; letter-spacing: 2px;}
+    h1 { color: var(--cor-texto); font-size: 1.3rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; text-align: center; font-weight: 900;}
+    .subtitle { font-size: 0.8rem; color: #94A3B8; margin-bottom: 25px; text-align: center; text-transform: uppercase; letter-spacing: 2px;}
+    @media (min-width: 480px) {
+      h1 { font-size: 1.5rem; }
+      .subtitle { font-size: 0.9rem; margin-bottom: 30px; }
+    }
 
-    /* Campo de Busca */
-    .search-container { display: flex; width: 100%; gap: 10px; margin-bottom: 25px; flex-direction: column; sm:flex-row; }
-    @media (min-width: 640px) { .search-container { flex-direction: row; } }
+    /* Campo de Busca Responsivo */
+    .search-container { 
+      display: flex; 
+      width: 100%; 
+      gap: 10px; 
+      margin-bottom: 25px; 
+      flex-direction: column; /* Mobile stack */
+    }
+    @media (min-width: 480px) { 
+      .search-container { flex-direction: row; } /* Lado a lado em telas maiores */
+    }
     
     .input-code {
       flex: 1; padding: 15px; border-radius: 12px; border: 1px solid var(--cor-borda-atual);
-      background-color: rgba(15, 23, 42, 0.8); color: #fff; font-family: 'Inter', sans-serif; font-size: 1rem;
+      background-color: rgba(15, 23, 42, 0.8); color: #fff; font-family: 'Inter', sans-serif; font-size: 0.9rem;
       text-transform: uppercase; outline: none; transition: border 0.3s; width: 100%;
     }
+    @media (min-width: 480px) { .input-code { font-size: 1rem; } }
     .input-code:focus { border-color: var(--cor-tema-atual); }
 
     .btn-search {
-      padding: 15px 25px; background-color: var(--cor-tema-atual); color: #0B1120;
+      padding: 15px; background-color: var(--cor-tema-atual); color: #0B1120;
       border: none; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase;
       font-size: 0.9rem; transition: transform 0.1s, filter 0.3s; width: 100%; white-space: nowrap;
     }
-    @media (min-width: 640px) { .btn-search { width: auto; } }
+    @media (min-width: 480px) { .btn-search { width: auto; padding: 15px 25px; } }
     .btn-search:hover { filter: brightness(1.2); }
     .btn-search:active { transform: scale(0.95); }
 
-    /* Box Principal */
+    /* Box Principal Responsiva */
     .box {
-      background-color: var(--cor-card); border: 1px solid var(--cor-borda-atual); border-radius: 24px;
-      padding: 40px 30px; width: 100%; box-shadow: var(--sombra); text-align: center;
+      background-color: var(--cor-card); border: 1px solid var(--cor-borda-atual); border-radius: 20px;
+      padding: 30px 20px; width: 100%; box-shadow: var(--sombra); text-align: center;
       position: relative; overflow: hidden; margin-bottom: 20px; transition: all 0.4s ease;
     }
+    @media (min-width: 480px) { .box { padding: 40px 30px; border-radius: 24px; } }
 
     /* Barra superior colorida da Box */
-    .box::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
-      background: var(--cor-tema-atual); transition: background 0.4s ease;
-    }
+    .box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: var(--cor-tema-atual); transition: background 0.4s ease; }
 
     /* Estado de Sucesso */
-    .valid-title { color: var(--cor-tema-atual); font-size: 1.4rem; font-weight: 900; margin-bottom: 5px; text-transform: uppercase; }
-    .valid-subtitle { font-size: 0.8rem; color: #94A3B8; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+    .valid-title { color: var(--cor-tema-atual); font-size: 1.2rem; font-weight: 900; margin-bottom: 5px; text-transform: uppercase; }
+    .valid-subtitle { font-size: 0.75rem; color: #94A3B8; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+    @media (min-width: 480px) { .valid-title { font-size: 1.4rem; } .valid-subtitle { font-size: 0.8rem; margin-bottom: 25px; } }
 
     /* Layout do QR e Dados */
     .success-content { display: flex; flex-direction: column; align-items: center; gap: 20px; }
     
     .qr-container { background: #fff; padding: 10px; border-radius: 12px; border: 2px solid var(--cor-tema-atual); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-    .qr-container img { width: 120px; height: 120px; display: block; }
+    .qr-container img { width: 100px; height: 100px; display: block; }
+    @media (min-width: 480px) { .qr-container img { width: 120px; height: 120px; } }
 
     /* Lista de Dados */
-    .data-list { text-align: left; width: 100%; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 16px; border: 1px solid #1E293B;}
-    .data-item { margin-bottom: 15px; border-bottom: 1px solid #1E293B; padding-bottom: 8px; }
+    .data-list { text-align: left; width: 100%; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 16px; border: 1px solid #1E293B;}
+    @media (min-width: 480px) { .data-list { padding: 20px; } }
+    
+    .data-item { margin-bottom: 12px; border-bottom: 1px solid #1E293B; padding-bottom: 8px; }
     .data-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
-    .data-label { color: #64748B; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: bold;}
-    .data-value { color: #fff; font-size: 1.1rem; font-weight: 600; word-wrap: break-word; }
-    .highlight-value { color: var(--cor-tema-atual); font-size: 1.3rem; font-weight: 900; text-transform: uppercase;}
+    
+    .data-label { color: #64748B; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: bold;}
+    .data-value { color: #fff; font-size: 1rem; font-weight: 600; word-wrap: break-word; }
+    .highlight-value { color: var(--cor-tema-atual); font-size: 1.15rem; font-weight: 900; text-transform: uppercase;}
+    
+    @media (min-width: 480px) {
+      .data-label { font-size: 0.75rem; }
+      .data-value { font-size: 1.1rem; }
+      .highlight-value { font-size: 1.3rem; }
+    }
+
+    /* Trava de quebra de texto para Hash longo no mobile */
+    .hash-text { font-family: monospace; font-size: 0.75rem; color: #94A3B8; word-break: break-all; }
+    @media (min-width: 480px) { .hash-text { font-size: 0.8rem; } }
 
     /* Estado de Erro */
     .box.error { border-color: var(--cor-erro); background-color: rgba(244, 63, 94, 0.05); }
     .box.error::before { background: var(--cor-erro); }
-    .error-title { color: var(--cor-erro); font-size: 1.5rem; font-weight: 900; margin-bottom: 10px; text-transform: uppercase;}
-    .error-code { font-family: monospace; background: rgba(0,0,0,0.5); padding: 10px 15px; border-radius: 8px; color: #fff; margin: 15px 0; display: inline-block; border: 1px dashed var(--cor-erro); letter-spacing: 1px;}
+    .error-title { color: var(--cor-erro); font-size: 1.3rem; font-weight: 900; margin-bottom: 10px; text-transform: uppercase;}
+    .error-code { font-family: monospace; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px; color: #fff; margin: 15px 0; display: inline-block; border: 1px dashed var(--cor-erro); letter-spacing: 1px; word-break: break-all; max-width: 100%;}
+    @media (min-width: 480px) { .error-title { font-size: 1.5rem; } .error-code { padding: 10px 15px; } }
 
     /* Loading */
-    .loading-spinner { width: 40px; height: 40px; border: 4px solid #1E293B; border-top-color: var(--cor-tema-atual); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
+    .loading-spinner { width: 35px; height: 35px; border: 4px solid #1E293B; border-top-color: var(--cor-tema-atual); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
+    @media (min-width: 480px) { .loading-spinner { width: 40px; height: 40px; } }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
     .hidden { display: none; }
-    footer { margin-top: 40px; font-size: 0.75rem; color: #64748B; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;}
+    footer { margin-top: 30px; font-size: 0.7rem; color: #64748B; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; text-align: center;}
+    @media (min-width: 480px) { footer { margin-top: 40px; font-size: 0.75rem; } }
   </style>
 </head>
 <body>
@@ -124,13 +154,13 @@
     <p class="subtitle" id="subtitulo-sistema">Hub Oficial BJJ Digital</p>
 
     <div class="search-container">
-      <input type="text" id="input-busca" class="input-code" placeholder="Digite a chave Hash..." />
+      <input type="text" id="input-busca" class="input-code" placeholder="Chave de Validação..." />
       <button id="btn-buscar" class="btn-search">Validar</button>
     </div>
 
     <div id="loading" class="box hidden">
       <div class="loading-spinner"></div>
-      <p style="color: #94A3B8; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Consultando Blockchain...</p>
+      <p style="color: #94A3B8; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Consultando Blockchain...</p>
     </div>
 
     <div id="success-box" class="box hidden">
@@ -161,7 +191,7 @@
             </div>
             <div class="data-item">
               <div class="data-label">Chave Criptográfica (Hash)</div>
-              <div class="data-value" id="res-codigo" style="font-family: monospace; font-size: 0.8rem; color: #94A3B8;"></div>
+              <div class="data-value hash-text" id="res-codigo"></div>
             </div>
           </div>
       </div>
@@ -169,9 +199,9 @@
 
     <div id="error-box" class="box error hidden">
       <div class="error-title">❌ Registro Inválido</div>
-      <p style="color: #cbd5e1; font-size: 0.9rem;">A chave informada não consta em nossos registros oficiais ou foi revogada.</p>
+      <p style="color: #cbd5e1; font-size: 0.85rem;">A chave informada não consta em nossos registros oficiais ou foi revogada.</p>
       <div class="error-code" id="res-codigo-erro"></div>
-      <p style="font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: bold;">Verifique possíveis erros de digitação.</p>
+      <p style="font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: bold;">Verifique possíveis erros de digitação.</p>
       <p id="debug-msg" style="color: #F59E0B; font-size: 0.7rem; margin-top: 10px; display: none;"></p>
     </div>
 
@@ -187,7 +217,6 @@
 
     document.getElementById('ano-atual').innerText = new Date().getFullYear();
 
-    // UNIFICAÇÃO: Conectando no banco unificado do Manager onde salvamos tudo
     const firebaseConfig = {
       apiKey: "AIzaSyAkIk25LZptKw_N_UJsDO418IwMZNZXBeI",
       authDomain: "bjj-maneger.firebaseapp.com",
@@ -207,29 +236,28 @@
     const elError = document.getElementById("error-box");
     const elDebug = document.getElementById("debug-msg");
 
-    // TEMAS DINÂMICOS DA BJJ DIGITAL
     function aplicarTema(prefixo) {
         const root = document.documentElement;
         if (prefixo.includes("BJJEXAMES")) {
-            root.style.setProperty('--cor-tema-atual', '#10B981'); // Emerald (EAD)
+            root.style.setProperty('--cor-tema-atual', '#10B981'); 
             root.style.setProperty('--bg-grad-atual', '#064E3B');
             document.getElementById("subtitulo-sistema").innerText = "Plataforma de Certificação EAD";
             document.getElementById("tipo-certificado-titulo").innerText = "Aprovação em Exame Teórico";
             document.getElementById("label-faixa").innerText = "Graduação Alvo";
         } else if (prefixo.includes("BJJARENA")) {
-            root.style.setProperty('--cor-tema-atual', '#F43F5E'); // Rose (Competição)
+            root.style.setProperty('--cor-tema-atual', '#F43F5E'); 
             root.style.setProperty('--bg-grad-atual', '#881337');
             document.getElementById("subtitulo-sistema").innerText = "Sistema de Competições";
             document.getElementById("tipo-certificado-titulo").innerText = "Certificado de Participação/Pódio";
             document.getElementById("label-faixa").innerText = "Categoria / Colocação";
         } else if (prefixo.includes("BJJMANAGER")) {
-            root.style.setProperty('--cor-tema-atual', '#3B82F6'); // Blue (Gestão)
+            root.style.setProperty('--cor-tema-atual', '#3B82F6'); 
             root.style.setProperty('--bg-grad-atual', '#1E3A8A');
             document.getElementById("subtitulo-sistema").innerText = "Sistema de Gestão de Academias";
             document.getElementById("tipo-certificado-titulo").innerText = "Certificado de Filiação Oficial";
             document.getElementById("label-faixa").innerText = "Status da Entidade";
         } else {
-            root.style.setProperty('--cor-tema-atual', '#D4AF37'); // Gold Premium Global
+            root.style.setProperty('--cor-tema-atual', '#D4AF37'); 
             root.style.setProperty('--bg-grad-atual', '#1E293B');
             document.getElementById("subtitulo-sistema").innerText = "Hub Oficial BJJ Digital";
             document.getElementById("tipo-certificado-titulo").innerText = "Certificado Oficial";
@@ -252,7 +280,6 @@
         aplicarTema(codigoHash);
 
         try {
-            // 1. TENTA BUSCAR NO NOVO SISTEMA (Leitura Direta O(1) na coleção certificados)
             const docRef = doc(db, "certificados", codigoHash);
             const docSnap = await getDoc(docRef);
 
@@ -261,7 +288,6 @@
                 return;
             }
 
-            // 2. FALLBACK PARA O SISTEMA LEGADO (Busca na coleção de resultados)
             const q = query(collection(db, "resultados"), where("codigo_verificacao", "==", codigoHash));
             const querySnapshot = await getDocs(q);
 
@@ -270,7 +296,6 @@
                 return;
             }
 
-            // SE NÃO ACHOU EM LUGAR NENHUM
             elLoading.classList.add("hidden");
             document.getElementById("res-codigo-erro").innerText = codigoHash;
             elError.classList.remove("hidden");
@@ -288,7 +313,6 @@
     function preencherSucesso(data, hash, isNovoSistema) {
         elLoading.classList.add("hidden");
 
-        // Geração Dinâmica do QR Code apontando para a própria página
         const urlValidacao = window.location.href.split('?')[0] + `?codigo=${hash}`;
         const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(urlValidacao)}`;
         document.getElementById("qr-code-img").src = qrImageUrl;
@@ -304,7 +328,6 @@
             } else { document.getElementById("res-data").innerText = "-"; }
 
         } else {
-            // Estrutura Legada
             document.getElementById("res-nome").innerText = data.usuario ? data.usuario.toUpperCase() : "N/A";
             document.getElementById("res-faixa").innerText = data.faixa ? data.faixa.toUpperCase() : "N/A";
             document.getElementById("res-equipe").innerText = "BJJ Exams (Legado)";
@@ -322,7 +345,6 @@
     btnBuscar.addEventListener("click", () => verificar(elInput.value));
     elInput.addEventListener("keypress", (e) => { if (e.key === "Enter") verificar(elInput.value); });
 
-    // Lógica para inicializar a partir da URL (ex: validar.html?codigo=HASH)
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
         const codigoUrl = params.get("codigo") || params.get("code") || params.get("hash");
