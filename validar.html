@@ -8,17 +8,18 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <style>
     :root {
-      --cor-fundo: #0B1120;
-      --cor-card: #0F172A; 
+      /* Paleta Ultra Dark Premium */
+      --cor-fundo: #050811;
+      --cor-card: rgba(15, 23, 42, 0.55); 
       --cor-destaque: #D4AF37; 
       --cor-tema-atual: #D4AF37; 
-      --cor-borda-atual: #334155; 
-      --bg-grad-atual: #1E293B;
+      --cor-borda-atual: rgba(255, 255, 255, 0.08); 
     }
 
     body {
@@ -28,45 +29,69 @@
       min-height: 100vh;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       position: relative; overflow-x: hidden;
+      background-image: radial-gradient(circle at 50% -20%, rgba(255,255,255,0.03) 0%, transparent 80%);
     }
 
-    /* Glow de Fundo Animado */
+    /* Glow de Fundo Animado e Elegante */
     #glow-bg {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      width: 80vw; height: 80vw; max-width: 600px; max-height: 600px;
-      border-radius: 50%; filter: blur(100px); pointer-events: none;
-      transition: background-color 1s ease; background-color: rgba(212, 175, 55, 0.05); z-index: 0;
+      width: 70vw; height: 70vw; max-width: 500px; max-height: 500px;
+      border-radius: 50%; filter: blur(120px); pointer-events: none;
+      transition: background-color 1s ease; background-color: rgba(212, 175, 55, 0.06); z-index: 0;
     }
 
-    .main-container { z-index: 10; width: 100%; max-width: 450px; padding: 20px; display: flex; flex-direction: column; align-items: center;}
+    .main-container { z-index: 10; width: 100%; max-width: 480px; padding: 20px; display: flex; flex-direction: column; align-items: center;}
 
-    /* Input Customizado */
+    /* Input Customizado Estilo Glass */
     .input-code {
-      width: 100%; padding: 18px; border-radius: 16px; border: 1px solid var(--cor-borda-atual);
-      background-color: rgba(15, 23, 42, 0.8); color: #fff; font-size: 1rem; text-align: center;
-      text-transform: uppercase; outline: none; transition: all 0.3s; font-family: monospace; letter-spacing: 1px;
+      width: 100%; padding: 20px; border-radius: 16px; border: 1px solid var(--cor-borda-atual);
+      background-color: rgba(0, 0, 0, 0.3); color: #fff; font-size: 1rem; text-align: center;
+      text-transform: uppercase; outline: none; transition: all 0.3s; font-family: monospace; letter-spacing: 2px;
+      backdrop-filter: blur(10px);
     }
-    .input-code:focus { border-color: var(--cor-tema-atual); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
+    .input-code:focus { border-color: var(--cor-tema-atual); box-shadow: 0 0 20px rgba(212, 175, 55, 0.15); background-color: rgba(0, 0, 0, 0.5);}
+    .input-code::placeholder { color: #64748B; letter-spacing: 1px; font-family: 'Inter', sans-serif;}
 
+    /* Botão Principal */
     .btn-search {
-      width: 100%; padding: 18px; background-color: var(--cor-tema-atual); color: #0B1120;
+      width: 100%; padding: 20px; background-color: var(--cor-tema-atual); color: #000;
       border: none; border-radius: 16px; font-weight: 900; cursor: pointer; text-transform: uppercase;
-      font-size: 0.9rem; transition: all 0.2s; margin-top: 10px; letter-spacing: 2px;
+      font-size: 0.85rem; transition: all 0.2s; margin-top: 12px; letter-spacing: 3px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
-    .btn-search:active { transform: scale(0.98); }
+    .btn-search:hover { filter: brightness(1.1); transform: translateY(-2px); }
+    .btn-search:active { transform: translateY(0) scale(0.98); }
 
-    /* Box Container */
+    /* Box Container (Glassmorphism Perfeito) */
     .box {
-      background-color: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px);
-      border: 1px solid var(--cor-borda-atual); border-radius: 24px; padding: 35px 25px; 
-      width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.5); text-align: center;
+      background-color: var(--cor-card); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--cor-borda-atual); border-radius: 24px; padding: 40px 30px; 
+      width: 100%; box-shadow: 0 25px 50px rgba(0,0,0,0.5); text-align: center;
       position: relative; overflow: hidden; margin-top: 20px; transition: all 0.4s ease;
     }
-    .box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--cor-tema-atual); transition: background 0.4s ease; }
+    /* Linha de destaque no topo do card */
+    .box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--cor-tema-atual); transition: background 0.4s ease; opacity: 0.8;}
 
-    /* Loading */
-    .spinner { width: 45px; height: 45px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--cor-tema-atual); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px auto; }
+    /* Loading Spinner */
+    .spinner { width: 50px; height: 50px; border: 3px solid rgba(255,255,255,0.05); border-top-color: var(--cor-tema-atual); border-radius: 50%; animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite; margin: 0 auto 25px auto; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* Botão Nova Consulta (Ghost Button) */
+    .btn-ghost {
+      width: 100%; padding: 16px; margin-top: 25px; background: transparent;
+      border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; color: #94A3B8;
+      font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;
+      transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.05); color: #fff; border-color: rgba(255,255,255,0.3); }
+    .btn-ghost:active { transform: scale(0.98); }
+
+    /* Grid de Dados Premium */
+    .data-grid { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; text-align: left; width: 100%; }
+    .data-row { display: flex; flex-direction: column; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .data-row:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+    .data-label { font-size: 0.65rem; color: #64748B; text-transform: uppercase; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 4px; }
+    .data-value { font-size: 1.05rem; font-weight: 600; color: #F8FAFC; word-break: break-word; }
 
     .hidden { display: none !important; }
   </style>
@@ -77,95 +102,109 @@
 
   <div class="main-container">
     
-    <div class="mb-6 text-center">
-      <img src="logo_bjj_digital.png" alt="BJJ Digital" class="h-16 mx-auto mb-4 drop-shadow-lg" id="logo-sistema" onerror="this.src='logo_bjjexems.png'; this.onerror='';">
-      <h1 class="text-sm font-black uppercase tracking-[0.3em] text-slate-300 transition-colors" id="txt-central-val">Autenticação Global</h1>
+    <div class="mb-8 text-center flex flex-col items-center">
+      <img src="logo_bjj_digital.png" alt="BJJ Digital" class="h-20 mx-auto mb-5 drop-shadow-[0_0_15px_rgba(255,215,0,0.2)]" id="logo-sistema" onerror="this.src='logo_bjjexems.png'; this.onerror='';">
+      <h1 class="text-xs font-black uppercase tracking-[0.4em] text-slate-300 transition-colors" id="txt-central-val">Autenticação Global</h1>
+      <div class="w-12 h-0.5 bg-slate-800 mt-4 rounded-full"></div>
     </div>
 
     <div id="estado-busca-manual" class="w-full flex flex-col items-center">
-      <p class="text-xs text-slate-400 mb-6 px-2 leading-relaxed text-center">Digite a Matrícula (Atleta), Serial (Diploma) ou Hash (Exames).</p>
-      <input type="text" id="input-busca" class="input-code" placeholder="Código / Serial / Hash">
-      <button id="btn-buscar" class="btn-search">Consultar Base</button>
+      <p class="text-[0.8rem] text-slate-400 mb-8 px-4 leading-relaxed text-center font-medium">Insira o Hash criptográfico, Matrícula ou Serial para validação oficial.</p>
+      <input type="text" id="input-busca" class="input-code" placeholder="EX: BJJEXAMES-2026-0001" autocomplete="off">
+      <button id="btn-buscar" class="btn-search">Validar Documento</button>
     </div>
 
-    <div id="estado-loading" class="box hidden flex-col items-center">
+    <div id="estado-loading" class="box hidden flex-col items-center justify-center py-10">
       <div class="spinner" id="spinner-load"></div>
-      <p class="text-xs font-bold text-slate-400 uppercase tracking-widest" id="loading-text">Conectando ao Banco...</p>
+      <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]" id="loading-text">Processando Blockchain...</p>
     </div>
 
     <div id="estado-sucesso-cart" class="box hidden flex-col items-center">
-      <div class="w-16 h-16 bg-cyan-500/20 text-cyan-400 rounded-full flex items-center justify-center text-3xl mb-4 shadow-[0_0_30px_rgba(6,182,212,0.2)]">✓</div>
-      <h2 class="text-xl font-black text-white uppercase tracking-tight mb-1">Identidade Válida</h2>
-      <p class="text-[9px] text-cyan-400 font-bold uppercase tracking-widest mb-8">Atleta Registrado(a)</p>
+      <i class="ph-fill ph-shield-check text-5xl mb-4" style="color: var(--cor-tema-atual); filter: drop-shadow(0 0 10px rgba(6,182,212,0.4));"></i>
+      <h2 class="text-2xl font-black text-white uppercase tracking-tight mb-1">Identidade Válida</h2>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] mb-8" style="color: var(--cor-tema-atual);">Atleta Registrado Oficialmente</p>
 
-      <div class="w-28 h-28 rounded-full border-4 border-slate-700 bg-slate-900 mb-4 overflow-hidden relative shadow-lg flex items-center justify-center mx-auto">
+      <div class="w-28 h-28 rounded-full border-[3px] bg-slate-900 mb-5 overflow-hidden relative shadow-[0_10px_20px_rgba(0,0,0,0.5)] flex items-center justify-center mx-auto" style="border-color: var(--cor-tema-atual);">
           <img id="val-foto" src="" class="w-full h-full object-cover hidden absolute inset-0 z-10">
-          <div id="val-foto-fallback" class="w-full h-full flex items-center justify-center text-5xl font-black text-slate-600 absolute inset-0 z-0"></div>
+          <div id="val-foto-fallback" class="w-full h-full flex items-center justify-center text-4xl font-black text-slate-600 absolute inset-0 z-0"></div>
       </div>
       
-      <h3 id="val-nome" class="text-xl font-black text-white uppercase mb-1 leading-tight">NOME DO ATLETA</h3>
-      <p id="val-faixa" class="text-[11px] font-bold text-cyan-400 uppercase tracking-widest mb-6">FAIXA</p>
+      <h3 id="val-nome" class="text-xl font-black text-white uppercase mb-1 leading-tight tracking-wide">NOME DO ATLETA</h3>
+      <p id="val-faixa" class="text-xs font-bold uppercase tracking-[0.2em] mb-6" style="color: var(--cor-tema-atual);">FAIXA</p>
 
-      <div class="w-full bg-slate-900/80 rounded-2xl p-5 border border-slate-700/50 text-left space-y-4">
-          <div>
-              <p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-0.5">Equipe / Academia</p>
-              <p id="val-equipe" class="text-xs font-black text-white break-words">Buscando equipe...</p>
+      <div class="data-grid">
+          <div class="data-row">
+              <span class="data-label">Equipe / Associação</span>
+              <span class="data-value" id="val-equipe">Buscando equipe...</span>
           </div>
-          <div class="flex justify-between items-end border-t border-slate-800 pt-3">
+          <div class="flex justify-between items-end pt-2">
               <div>
-                  <p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-0.5">Matrícula</p>
-                  <p id="val-matricula" class="text-sm font-mono font-bold text-slate-300">00000</p>
+                  <span class="data-label">Matrícula</span>
+                  <span class="data-value font-mono text-slate-300 text-sm" id="val-matricula">00000</span>
               </div>
               <div class="text-right">
-                  <p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-0.5">Status</p>
-                  <p id="val-status" class="text-sm font-black text-emerald-400 uppercase">ATIVO</p>
+                  <span class="data-label">Status</span>
+                  <span class="data-value font-black text-emerald-400 text-sm" id="val-status">ATIVO</span>
               </div>
           </div>
       </div>
-      <button onclick="window.location.reload()" class="mt-6 text-[10px] font-bold text-slate-500 hover:text-white uppercase tracking-widest transition-colors">Nova Consulta ↺</button>
+      
+      <button onclick="novaConsulta()" class="btn-ghost">
+        <i class="ph-bold ph-arrows-clockwise text-lg"></i> Nova Validação
+      </button>
     </div>
 
     <div id="estado-sucesso-cert" class="box hidden flex-col items-center">
-      <div id="cert-icon-container" class="w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-4">🏅</div>
-      <img id="cert-equipe-logo" src="" class="h-20 w-auto object-contain mb-4 drop-shadow-md hidden">
       
-      <h2 class="text-xl font-black text-white uppercase tracking-tight mb-1" id="cert-titulo-main">Documento Válido</h2>
-      <p class="text-[9px] font-bold uppercase tracking-widest mb-8" id="cert-subtitulo-main">Autenticação Global</p>
-
-      <h3 id="cert-nome-atleta" class="text-xl font-black text-white uppercase mb-1 leading-tight">NOME DO ATLETA</h3>
-      <p id="cert-faixa-concedida" class="text-[11px] font-bold uppercase tracking-widest mb-6">FAIXA</p>
-
-      <div class="w-full bg-slate-900/80 rounded-2xl p-5 border border-slate-700/50 text-left space-y-4">
-          <div>
-              <p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-0.5">Entidade / Equipe</p>
-              <p id="cert-equipe" class="text-xs font-black text-white break-words">Buscando equipe...</p>
-          </div>
-          <div class="border-t border-slate-800 pt-3">
-              <p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-0.5">Data de Emissão</p>
-              <p id="cert-data-cerimonia" class="text-xs font-bold text-slate-300 uppercase">00/00/0000</p>
-          </div>
-          <div class="border-t border-slate-800 pt-3">
-              <p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-0.5">Chave / Serial de Verificação</p>
-              <p id="cert-serial" class="text-[11px] font-mono font-bold text-slate-400 break-all">#0000000</p>
-          </div>
-          
-          <div id="cert-extra-block" class="border-t border-slate-800 pt-3 hidden"></div>
+      <div class="relative mb-5">
+        <i class="ph-fill ph-seal-check text-6xl" id="cert-icon-container" style="color: var(--cor-tema-atual); filter: drop-shadow(0 0 15px rgba(255,255,255,0.1));"></i>
+        <img id="cert-equipe-logo" src="" class="h-20 w-auto object-contain drop-shadow-xl hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-900 rounded-full p-2 border border-slate-700">
       </div>
-      <button onclick="window.location.reload()" class="mt-6 text-[10px] font-bold text-slate-500 hover:text-white uppercase tracking-widest transition-colors">Nova Consulta ↺</button>
+      
+      <h2 class="text-2xl font-black text-white uppercase tracking-tight mb-1" id="cert-titulo-main">Documento Válido</h2>
+      <p class="text-[9px] font-black uppercase tracking-[0.2em] mb-8" style="color: var(--cor-tema-atual);" id="cert-subtitulo-main">Autenticação Global</p>
+
+      <h3 id="cert-nome-atleta" class="text-xl font-black text-white uppercase mb-1 leading-tight tracking-wide">NOME DO ATLETA</h3>
+      <p id="cert-faixa-concedida" class="text-xs font-bold uppercase tracking-[0.2em] mb-6" style="color: var(--cor-tema-atual);">FAIXA</p>
+
+      <div class="data-grid">
+          <div class="data-row">
+              <span class="data-label">Entidade Concedente</span>
+              <span class="data-value" id="cert-equipe">Buscando equipe...</span>
+          </div>
+          <div class="data-row">
+              <span class="data-label">Data de Emissão Oficial</span>
+              <span class="data-value text-slate-300 text-sm" id="cert-data-cerimonia">00/00/0000</span>
+          </div>
+          <div class="data-row">
+              <span class="data-label">Chave / Serial de Verificação</span>
+              <span class="data-value font-mono text-slate-400 text-xs" id="cert-serial">#0000000</span>
+          </div>
+          <div id="cert-extra-block" class="pt-2 hidden"></div>
+      </div>
+      
+      <button onclick="novaConsulta()" class="btn-ghost">
+        <i class="ph-bold ph-arrows-clockwise text-lg"></i> Nova Validação
+      </button>
     </div>
 
-    <div id="estado-erro" class="box hidden flex-col items-center py-6" style="border-color: #F43F5E; background-color: rgba(244,63,94,0.05);">
-      <div class="w-16 h-16 bg-rose-500/20 text-rose-500 rounded-full flex items-center justify-center text-4xl mb-4 shadow-[0_0_30px_rgba(244,63,94,0.3)]">✗</div>
-      <h2 class="text-xl font-black text-rose-500 uppercase tracking-tight mb-2">Registro Inválido</h2>
-      <p class="text-xs text-slate-400 leading-relaxed px-2 mb-4">O documento ou identidade não foi encontrado na base de dados oficial ou foi revogado.</p>
-      <div class="bg-black/50 p-3 rounded-lg border border-rose-500/30 w-full mb-6 text-center">
-          <p class="text-[10px] font-mono text-rose-300 break-all" id="erro-codigo-mostrado">--</p>
+    <div id="estado-erro" class="box hidden flex-col items-center py-8" style="border-color: rgba(244,63,94,0.3); background-color: rgba(15,23,42,0.8);">
+      <i class="ph-fill ph-warning-circle text-6xl mb-4 text-rose-500" style="filter: drop-shadow(0 0 15px rgba(244,63,94,0.3));"></i>
+      <h2 class="text-xl font-black text-rose-500 uppercase tracking-tight mb-3">Registro Não Encontrado</h2>
+      <p class="text-xs text-slate-400 leading-relaxed px-2 mb-6 font-medium">A chave ou matrícula informada não consta na base de dados oficial ou o documento foi revogado.</p>
+      
+      <div class="bg-black/40 p-4 rounded-xl border border-rose-500/20 w-full mb-8 text-center">
+          <span class="block text-[8px] text-slate-500 uppercase font-black tracking-widest mb-1">Código Fornecido</span>
+          <p class="text-xs font-mono text-rose-300 break-all" id="erro-codigo-mostrado">--</p>
       </div>
-      <button onclick="window.location.reload()" class="w-full py-4 bg-slate-800 hover:bg-slate-700 text-white font-black rounded-xl text-xs uppercase tracking-widest transition-colors">Tentar Novamente</button>
+      
+      <button onclick="novaConsulta()" class="btn-search w-full !mt-0 !bg-rose-600 !text-white hover:!bg-rose-500 !shadow-[0_4px_15px_rgba(244,63,94,0.3)] flex items-center justify-center gap-2">
+        <i class="ph-bold ph-magnifying-glass"></i> Tentar Novamente
+      </button>
     </div>
 
-    <footer class="mt-8 text-[10px] text-slate-600 font-bold uppercase tracking-widest text-center">
-      &copy; <span id="ano-atual">2026</span> BJJ Digital Group
+    <footer class="mt-10 text-[9px] text-slate-600 font-bold uppercase tracking-[0.2em] text-center">
+      &copy; <span id="ano-atual">2026</span> BJJ Digital Ecosystem
     </footer>
 
   </div>
@@ -194,6 +233,11 @@
     const elCert = document.getElementById("estado-sucesso-cert");
     const elErro = document.getElementById("estado-erro");
 
+    // Função de Reset da Tela (Botão Nova Consulta)
+    window.novaConsulta = () => {
+        window.location.href = window.location.pathname; // Reseta limpando os parâmetros da URL
+    }
+
     function esconderTudo() {
         [elManual, elLoading, elCart, elCert, elErro].forEach(el => {
             el.classList.add("hidden");
@@ -201,16 +245,16 @@
         });
     }
 
-    function setTema(cor, rgba) {
-        document.documentElement.style.setProperty('--cor-tema-atual', cor);
-        document.getElementById('glow-bg').style.backgroundColor = rgba;
-        document.getElementById('txt-central-val').style.color = cor;
-        // CORREÇÃO DO BUG FATAL: Removida a tentativa do JS de pintar a borda ::before.
-        // Apenas mudamos a variável --cor-tema-atual, e o CSS faz a mágica sozinho!
+    // Temas Dinâmicos Premium
+    function setTema(corPrincipal, rgbaGlow) {
+        document.documentElement.style.setProperty('--cor-tema-atual', corPrincipal);
+        document.getElementById('glow-bg').style.backgroundColor = rgbaGlow;
+        // Opcional: Pintar o título principal levemente com a cor
+        document.getElementById('txt-central-val').style.color = corPrincipal;
     }
 
     async function verificar(codigoOriginal, tipoForcado = null) {
-        if (!codigoOriginal) { alert("Por favor, digite uma chave válida."); return; }
+        if (!codigoOriginal) { return; } // Ignora cliques vazios sem alert
         
         const codigo = codigoOriginal.trim();
         const codigoUpper = codigo.toUpperCase();
@@ -220,11 +264,11 @@
         elLoading.classList.add("flex");
 
         try {
-            // 1. FORÇADO VIA URL (Sistemas Antigos)
+            // 1. FORÇADO VIA URL
             if (tipoForcado === 'mat') return await buscarCarteirinha(codigo);
             if (tipoForcado === 'cert') return await buscarDiploma(codigo);
 
-            // 2. BUSCA INTELIGENTE HASH (BJJ EXAMS)
+            // 2. BJJ EXAMS HASH
             if (codigoUpper.startsWith("BJJEXAMES-") || codigoUpper.startsWith("BJJ")) {
                 const docSnap = await getDoc(doc(db, "certificados", codigoUpper));
                 if (docSnap.exists()) return preencherCertificadoExams(docSnap.data(), codigoUpper);
@@ -234,7 +278,7 @@
                 if (!snapRes.empty) return preencherCertificadoExamsLegado(snapRes.docs[0].data(), codigoUpper);
             }
 
-            // 3. BUSCA CARTEIRINHA (String e Number)
+            // 3. BUSCA ALUNO
             let snapMat = await getDocs(query(collection(db, "alunos"), where("matricula", "==", codigo)));
             if (!snapMat.empty) return await preencherCarteirinha(snapMat.docs[0].data(), codigo);
             
@@ -246,7 +290,7 @@
             const dAluno = await getDoc(doc(db, "alunos", codigo));
             if(dAluno.exists()) return await preencherCarteirinha(dAluno.data(), codigo);
 
-            // 4. BUSCA DIPLOMAS MANAGER (String e Number)
+            // 4. BUSCA DIPLOMA MANAGER
             let snapCert = await getDocs(query(collection(db, "certificados"), where("numero_serie", "==", codigo)));
             if (!snapCert.empty) return await preencherDiplomaManager(snapCert.docs[0].data(), codigo);
 
@@ -255,7 +299,6 @@
                 if (!snapCert.empty) return await preencherDiplomaManager(snapCert.docs[0].data(), codigo);
             }
 
-            // Se o código chegou até aqui, não existe
             mostrarErro(codigo);
 
         } catch (e) {
@@ -267,32 +310,29 @@
     async function buscarCarteirinha(codigo) {
         let snap = await getDocs(query(collection(db, "alunos"), where("matricula", "==", codigo)));
         if (!snap.empty) return await preencherCarteirinha(snap.docs[0].data(), codigo);
-        
         if (!isNaN(codigo)) {
             snap = await getDocs(query(collection(db, "alunos"), where("matricula", "==", Number(codigo))));
             if (!snap.empty) return await preencherCarteirinha(snap.docs[0].data(), codigo);
         }
-        
         const d = await getDoc(doc(db, "alunos", codigo));
         if(d.exists()) return await preencherCarteirinha(d.data(), codigo);
-        
         mostrarErro(codigo);
     }
 
     async function buscarDiploma(codigo) {
         let snap = await getDocs(query(collection(db, "certificados"), where("numero_serie", "==", codigo)));
         if (!snap.empty) return await preencherDiplomaManager(snap.docs[0].data(), codigo);
-        
         if (!isNaN(codigo)) {
             snap = await getDocs(query(collection(db, "certificados"), where("numero_serie", "==", Number(codigo))));
             if (!snap.empty) return await preencherDiplomaManager(snap.docs[0].data(), codigo);
         }
-        
         mostrarErro(codigo);
     }
 
+    // PREENCHEDORES DE TELA (Com as cores Premium)
+    
     async function preencherCarteirinha(alunoData, matricula) {
-        setTema('#06b6d4', 'rgba(6, 182, 212, 0.1)'); // Cyan
+        setTema('#06B6D4', 'rgba(6, 182, 212, 0.08)'); // Cyan Neon
         
         let idEquipe = String(alunoData.equipe_id || alunoData.equipeId || "").trim();
         const elEquipe = document.getElementById('val-equipe');
@@ -300,7 +340,7 @@
             const eqSnap = await getDoc(doc(db, "equipes", idEquipe));
             if(eqSnap.exists()) elEquipe.innerText = (eqSnap.data().nome_equipe || eqSnap.data().nome || "Academia").toUpperCase();
             else elEquipe.innerText = "EQUIPE NÃO LOCALIZADA";
-        } else { elEquipe.innerText = "ALUNO SEM EQUIPE REGISTRADA"; }
+        } else { elEquipe.innerText = "ATLETA INDEPENDENTE / SEM EQUIPE"; }
 
         document.getElementById('val-nome').innerText = alunoData.nome || "Atleta";
         const faixa = alunoData.faixa || 'BRANCA';
@@ -325,16 +365,13 @@
     }
 
     async function preencherDiplomaManager(certData, serial) {
-        setTema('#3b82f6', 'rgba(59, 130, 246, 0.1)'); // Blue Oficial
+        setTema('#3B82F6', 'rgba(59, 130, 246, 0.08)'); // Blue Sapphire
         
-        document.getElementById('cert-titulo-main').innerText = "Diploma Válido";
-        document.getElementById('cert-subtitulo-main').innerText = "Graduação Autêntica";
-        document.getElementById('cert-subtitulo-main').className = "text-[9px] text-blue-400 font-bold uppercase tracking-widest mb-8";
-        document.getElementById('cert-icon-container').className = "w-16 h-16 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center text-3xl mb-4 shadow-[0_0_30px_rgba(59,130,246,0.2)]";
-
+        document.getElementById('cert-titulo-main').innerText = "Diploma Oficial";
+        document.getElementById('cert-subtitulo-main').innerText = "Autenticidade Verificada";
+        
         document.getElementById('cert-nome-atleta').innerText = certData.nome_aluno || "Atleta";
         document.getElementById('cert-faixa-concedida').innerText = certData.faixa || "Faixa";
-        document.getElementById('cert-faixa-concedida').className = "text-[11px] font-bold text-blue-500 uppercase tracking-widest mb-6";
         document.getElementById('cert-serial').innerText = "#" + serial;
 
         if (certData.data_cerimonia) {
@@ -352,19 +389,19 @@
                 const eqData = eqSnap.data();
                 document.getElementById('cert-equipe').innerText = (eqData.nome_equipe || "Academia").toUpperCase();
                 if(eqData.url_logo) {
-                    document.getElementById('cert-icon-container').classList.add('hidden');
+                    document.getElementById('cert-icon-container').classList.add('opacity-10'); // Deixa o icone de fundo fraco
                     document.getElementById('cert-equipe-logo').src = eqData.url_logo;
                     document.getElementById('cert-equipe-logo').classList.remove('hidden');
                 }
             } else { document.getElementById('cert-equipe').innerText = "EQUIPE NÃO ENCONTRADA"; }
-        } else { document.getElementById('cert-equipe').innerText = "EQUIPE NÃO REGISTRADA"; }
+        } else { document.getElementById('cert-equipe').innerText = "NÃO INFORMADA"; }
 
         const extra = document.getElementById('cert-extra-block');
         extra.classList.remove('hidden');
         extra.innerHTML = `
-            <div class="grid grid-cols-2 gap-2">
-                <div><p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-0.5">Assinatura Mestre</p><p class="text-[10px] font-black text-slate-300 uppercase">${certData.prof_responsavel || "--"}</p></div>
-                <div><p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-0.5">Assinatura Prof.</p><p class="text-[10px] font-black text-slate-300 uppercase">${certData.prof_direto || "--"}</p></div>
+            <div class="flex justify-between items-center mt-2 border-t border-slate-700/50 pt-3">
+                <div><span class="data-label">Mestre Assinante</span><span class="data-value text-xs block text-slate-300 uppercase">${certData.prof_responsavel || "--"}</span></div>
+                <div class="text-right"><span class="data-label">Prof. Direto</span><span class="data-value text-xs block text-slate-300 uppercase">${certData.prof_direto || "--"}</span></div>
             </div>`;
 
         esconderTudo();
@@ -372,28 +409,24 @@
     }
 
     function preencherCertificadoExams(data, hash) {
-        setTema('#10B981', 'rgba(16, 185, 129, 0.1)'); // Emerald
+        setTema('#10B981', 'rgba(16, 185, 129, 0.08)'); // Emerald Jade
         
-        document.getElementById('cert-titulo-main').innerText = "Certificado Válido";
-        document.getElementById('cert-subtitulo-main').innerText = "Aprovação em Exame Teórico EAD";
-        document.getElementById('cert-subtitulo-main').className = "text-[9px] text-emerald-400 font-bold uppercase tracking-widest mb-8";
-        document.getElementById('cert-icon-container').className = "w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-3xl mb-4 shadow-[0_0_30px_rgba(16,185,129,0.2)]";
-
-        document.getElementById("cert-nome-atleta").innerText = data.nome_aluno || "N/A";
-        document.getElementById("cert-faixa-concedida").innerText = data.faixa_alvo || "N/A";
-        document.getElementById("cert-faixa-concedida").className = "text-[11px] font-bold text-emerald-500 uppercase tracking-widest mb-6";
+        document.getElementById('cert-titulo-main').innerText = "Certificado de Exame";
+        document.getElementById('cert-subtitulo-main').innerText = "Aprovação em Plataforma EAD";
+        
+        document.getElementById("cert-nome-atleta").innerText = data.nome_aluno || "Atleta";
+        document.getElementById("cert-faixa-concedida").innerText = data.faixa_alvo || "Faixa";
         document.getElementById("cert-equipe").innerText = data.equipe_origem || "Academia Oficial";
         document.getElementById("cert-serial").innerText = hash;
         
         if(data.emitido_em && data.emitido_em.seconds) {
-            const date = new Date(data.emitido_em.seconds * 1000);
-            document.getElementById("cert-data-cerimonia").innerText = date.toLocaleDateString('pt-BR');
-        } else { document.getElementById("cert-data-cerimonia").innerText = "-"; }
+            document.getElementById("cert-data-cerimonia").innerText = new Date(data.emitido_em.seconds * 1000).toLocaleDateString('pt-BR');
+        } else { document.getElementById("cert-data-cerimonia").innerText = "--/--/----"; }
 
         if(data.nota_final !== undefined) {
             const extra = document.getElementById('cert-extra-block');
             extra.classList.remove('hidden');
-            extra.innerHTML = `<div><p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-0.5">Nota de Aprovação EAD</p><p class="text-sm font-black text-emerald-400 uppercase">${data.nota_final}% de Acertos</p></div>`;
+            extra.innerHTML = `<div class="mt-2 border-t border-slate-700/50 pt-3"><span class="data-label">Aproveitamento</span><span class="data-value block font-black text-emerald-400 text-sm uppercase">${data.nota_final}% de Acertos Teóricos</span></div>`;
         } else {
             document.getElementById('cert-extra-block').classList.add('hidden');
         }
@@ -403,22 +436,18 @@
     }
 
     function preencherCertificadoExamsLegado(data, hash) {
-        setTema('#10B981', 'rgba(16, 185, 129, 0.1)'); // Emerald
+        setTema('#10B981', 'rgba(16, 185, 129, 0.08)'); 
         document.getElementById('cert-titulo-main').innerText = "Certificado Válido (Legado)";
-        document.getElementById('cert-subtitulo-main').innerText = "Aprovação em Exame Antigo";
-        document.getElementById('cert-subtitulo-main').className = "text-[9px] text-emerald-400 font-bold uppercase tracking-widest mb-8";
-        document.getElementById('cert-icon-container').className = "w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-3xl mb-4 shadow-[0_0_30px_rgba(16,185,129,0.2)]";
-
+        document.getElementById('cert-subtitulo-main').innerText = "Aprovação EAD Antiga";
+        
         document.getElementById("cert-nome-atleta").innerText = data.usuario ? data.usuario.toUpperCase() : "N/A";
         document.getElementById("cert-faixa-concedida").innerText = data.faixa ? data.faixa.toUpperCase() : "N/A";
-        document.getElementById("cert-faixa-concedida").className = "text-[11px] font-bold text-emerald-500 uppercase tracking-widest mb-6";
         document.getElementById("cert-equipe").innerText = "BJJ Exams (Sistema Antigo)";
         document.getElementById("cert-serial").innerText = hash;
 
         if(data.data && data.data.seconds) {
-            const date = new Date(data.data.seconds * 1000);
-            document.getElementById("cert-data-cerimonia").innerText = date.toLocaleDateString('pt-BR');
-        } else { document.getElementById("cert-data-cerimonia").innerText = "-"; }
+            document.getElementById("cert-data-cerimonia").innerText = new Date(data.data.seconds * 1000).toLocaleDateString('pt-BR');
+        } else { document.getElementById("cert-data-cerimonia").innerText = "--/--/----"; }
         
         document.getElementById('cert-extra-block').classList.add('hidden');
 
@@ -427,15 +456,17 @@
     }
 
     function mostrarErro(codigo) {
-        setTema('#F43F5E', 'rgba(244, 63, 94, 0.05)'); // Rose
+        setTema('#F43F5E', 'rgba(244, 63, 94, 0.04)'); // Red Error
         esconderTudo();
-        document.getElementById('erro-codigo-mostrado').innerText = codigo || "CÓDIGO VAZIO";
+        document.getElementById('erro-codigo-mostrado').innerText = codigo || "CÓDIGO AUSENTE";
         elErro.classList.remove('hidden'); elErro.classList.add('flex');
     }
 
+    // Gatilhos de Busca
     document.getElementById("btn-buscar").addEventListener("click", () => verificar(document.getElementById("input-busca").value));
     document.getElementById("input-busca").addEventListener("keypress", (e) => { if (e.key === "Enter") verificar(e.target.value); });
 
+    // Inicialização
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
         const matriculaUrl = params.get("mat");
@@ -450,6 +481,9 @@
             elManual.classList.remove("hidden");
             elManual.classList.add("flex");
         }
+        
+        // Coloca o cursor direto no input para agilizar no Desktop
+        setTimeout(()=> document.getElementById('input-busca').focus(), 300);
     }
   </script>
 </body>
