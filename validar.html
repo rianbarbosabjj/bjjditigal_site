@@ -30,6 +30,7 @@
       position: relative; overflow-x: hidden;
     }
 
+    /* Glow de Fundo Animado */
     #glow-bg {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
       width: 80vw; height: 80vw; max-width: 600px; max-height: 600px;
@@ -39,6 +40,7 @@
 
     .main-container { z-index: 10; width: 100%; max-width: 450px; padding: 20px; display: flex; flex-direction: column; align-items: center;}
 
+    /* Input Customizado */
     .input-code {
       width: 100%; padding: 18px; border-radius: 16px; border: 1px solid var(--cor-borda-atual);
       background-color: rgba(15, 23, 42, 0.8); color: #fff; font-size: 1rem; text-align: center;
@@ -53,6 +55,7 @@
     }
     .btn-search:active { transform: scale(0.98); }
 
+    /* Box Container */
     .box {
       background-color: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px);
       border: 1px solid var(--cor-borda-atual); border-radius: 24px; padding: 35px 25px; 
@@ -61,10 +64,10 @@
     }
     .box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--cor-tema-atual); transition: background 0.4s ease; }
 
+    /* Loading */
     .spinner { width: 45px; height: 45px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--cor-tema-atual); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px auto; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    /* Força o ocultamento ignorando o Flex */
     .hidden { display: none !important; }
   </style>
 </head>
@@ -96,8 +99,8 @@
       <p class="text-[9px] text-cyan-400 font-bold uppercase tracking-widest mb-8">Atleta Registrado(a)</p>
 
       <div class="w-28 h-28 rounded-full border-4 border-slate-700 bg-slate-900 mb-4 overflow-hidden relative shadow-lg flex items-center justify-center mx-auto">
-          <img id="val-foto" src="" class="w-full h-full object-cover hidden">
-          <div id="val-foto-fallback" class="w-full h-full flex items-center justify-center text-5xl font-black text-slate-600"></div>
+          <img id="val-foto" src="" class="w-full h-full object-cover hidden absolute inset-0 z-10">
+          <div id="val-foto-fallback" class="w-full h-full flex items-center justify-center text-5xl font-black text-slate-600 absolute inset-0 z-0"></div>
       </div>
       
       <h3 id="val-nome" class="text-xl font-black text-white uppercase mb-1 leading-tight">NOME DO ATLETA</h3>
@@ -191,7 +194,6 @@
     const elCert = document.getElementById("estado-sucesso-cert");
     const elErro = document.getElementById("estado-erro");
 
-    // FUNÇÃO ESCUDO: Esconde tudo e remove a classe flex (evitando bugs do Tailwind)
     function esconderTudo() {
         [elManual, elLoading, elCart, elCert, elErro].forEach(el => {
             el.classList.add("hidden");
@@ -203,10 +205,10 @@
         document.documentElement.style.setProperty('--cor-tema-atual', cor);
         document.getElementById('glow-bg').style.backgroundColor = rgba;
         document.getElementById('txt-central-val').style.color = cor;
-        document.querySelector('.box::before').style.background = cor;
+        // CORREÇÃO DO BUG FATAL: Removida a tentativa do JS de pintar a borda ::before.
+        // Apenas mudamos a variável --cor-tema-atual, e o CSS faz a mágica sozinho!
     }
 
-    // O CÉREBRO DA BUSCA INTELIGENTE
     async function verificar(codigoOriginal, tipoForcado = null) {
         if (!codigoOriginal) { alert("Por favor, digite uma chave válida."); return; }
         
@@ -253,7 +255,7 @@
                 if (!snapCert.empty) return await preencherDiplomaManager(snapCert.docs[0].data(), codigo);
             }
 
-            // Se nada funcionar
+            // Se o código chegou até aqui, não existe
             mostrarErro(codigo);
 
         } catch (e) {
@@ -314,6 +316,7 @@
             document.getElementById('val-foto').src = alunoData.foto_url;
             document.getElementById('val-foto').classList.remove('hidden');
         } else {
+            document.getElementById('val-foto').classList.add('hidden');
             document.getElementById('val-foto-fallback').innerText = (alunoData.nome ? alunoData.nome.charAt(0).toUpperCase() : "?");
         }
 
@@ -334,7 +337,6 @@
         document.getElementById('cert-faixa-concedida').className = "text-[11px] font-bold text-blue-500 uppercase tracking-widest mb-6";
         document.getElementById('cert-serial').innerText = "#" + serial;
 
-        // Correção de Data
         if (certData.data_cerimonia) {
             if (typeof certData.data_cerimonia === 'string') {
                 const p = certData.data_cerimonia.split('-');
