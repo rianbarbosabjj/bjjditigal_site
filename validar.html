@@ -426,7 +426,7 @@
         if(data.emitido_em && data.emitido_em.seconds) { document.getElementById("cert-data-cerimonia").innerText = new Date(data.emitido_em.seconds * 1000).toLocaleDateString('pt-BR'); } else { document.getElementById("cert-data-cerimonia").innerText = "--/--/----"; }
 
         if(data.nota_final !== undefined) {
-            const extra = document.getElementById('cert-extra-block'); extra.classList.remove('hidden'); extra.innerHTML = `<div class="mt-2 border-t border-slate-700/50 pt-3"><span class="data-label">Aproveitamento</span><span class="data-value block font-black text-emerald-400 text-sm uppercase">${data.nota_final}% de Acertos Teóricos</span></div>`;
+            const extra = document.getElementById('cert-extra-block'); extra.classList.remove('hidden'); extra.innerHTML = `<div class="mt-2 border-t border-slate-700/50 pt-3"><span class="data-label">Aproveitamento</span><span class="data-value block font-black text-emerald-400 text-sm uppercase">${data.nota_final}% de Acertos no Exame.</span></div>`;
         } else { document.getElementById('cert-extra-block').classList.add('hidden'); }
 
         esconderTudo(); elCert.classList.remove("hidden"); elCert.classList.add("flex");
