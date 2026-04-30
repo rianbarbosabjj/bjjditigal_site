@@ -129,8 +129,10 @@
           <div id="val-foto-fallback" class="w-full h-full flex items-center justify-center text-4xl font-black text-slate-600 absolute inset-0 z-0"></div>
       </div>
       
-      <h3 id="val-nome" class="text-xl font-black text-white uppercase mb-1 leading-tight tracking-wide">NOME DO ATLETA</h3>
-      <p id="val-faixa" class="text-xs font-bold uppercase tracking-[0.2em] mb-6" style="color: var(--cor-tema-atual);">FAIXA</p>
+      <h3 id="val-nome" class="text-xl font-black text-white uppercase mb-4 leading-tight tracking-wide">NOME DO ATLETA</h3>
+      
+      <!-- Componente Visual da Faixa -->
+      <div id="visual-faixa-alvo-cart" class="w-full max-w-[200px] mb-8 transition-all duration-300"></div>
 
       <div class="data-grid">
           <div class="data-row">
@@ -164,8 +166,10 @@
       <h2 class="text-2xl font-black text-white uppercase tracking-tight mb-1" id="cert-titulo-main">Documento Válido</h2>
       <p class="text-[9px] font-black uppercase tracking-[0.2em] mb-8" style="color: var(--cor-tema-atual);" id="cert-subtitulo-main">Autenticação Global</p>
 
-      <h3 id="cert-nome-atleta" class="text-xl font-black text-white uppercase mb-1 leading-tight tracking-wide">NOME DO ATLETA</h3>
-      <p id="cert-faixa-concedida" class="text-xs font-bold uppercase tracking-[0.2em] mb-6" style="color: var(--cor-tema-atual);">FAIXA</p>
+      <h3 id="cert-nome-atleta" class="text-xl font-black text-white uppercase mb-4 leading-tight tracking-wide">NOME DO ATLETA</h3>
+      
+      <!-- Componente Visual da Faixa -->
+      <div id="visual-faixa-alvo-cert" class="w-full max-w-[200px] mb-8 transition-all duration-300"></div>
 
       <div class="data-grid">
           <div class="data-row">
@@ -233,87 +237,96 @@
     const elCert = document.getElementById("estado-sucesso-cert");
     const elErro = document.getElementById("estado-erro");
 
-    // Função de Reset da Tela (Botão Nova Consulta)
-    window.novaConsulta = () => {
-        window.location.href = window.location.pathname; // Reseta limpando os parâmetros da URL
-    }
+    window.novaConsulta = () => { window.location.href = window.location.pathname; }
 
-    function esconderTudo() {
-        [elManual, elLoading, elCart, elCert, elErro].forEach(el => {
-            el.classList.add("hidden");
-            el.classList.remove("flex");
-        });
-    }
+    function esconderTudo() { [elManual, elLoading, elCart, elCert, elErro].forEach(el => { el.classList.add("hidden"); el.classList.remove("flex"); }); }
 
-    // Temas Dinâmicos Premium
     function setTema(corPrincipal, rgbaGlow) {
         document.documentElement.style.setProperty('--cor-tema-atual', corPrincipal);
         document.getElementById('glow-bg').style.backgroundColor = rgbaGlow;
-        // Opcional: Pintar o título principal levemente com a cor
         document.getElementById('txt-central-val').style.color = corPrincipal;
     }
 
+    // Função de Desenho da Faixa
+    function desenharFaixaVisual(faixa, targetId) {
+        const container = document.getElementById(targetId);
+        if(!container) return;
+        if(!faixa) { container.innerHTML = ''; return; }
+
+        const c_branca = '#ffffff'; const c_cinza = '#9ca3af'; const c_amarela = '#eab308';
+        const c_laranja = '#ea580c'; const c_verde = '#16a34a'; const c_azul = '#2563eb';
+        const c_roxa = '#7e22ce'; const c_marrom = '#5c2b07'; const c_preta = '#111827';
+
+        let bgCSS = ''; let ponteiraCSS = 'bg-black'; let graus = ''; 
+
+        // Transforma pra title case para comparar facilmente
+        const fNorm = faixa.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+
+        switch(fNorm) {
+            case 'Branca': bgCSS = `background-color: ${c_branca};`; break;
+            case 'Cinza E Branca': case 'Cinza e Branca': bgCSS = `background: linear-gradient(to bottom, ${c_cinza} 33%, ${c_branca} 33% 66%, ${c_cinza} 66%);`; break;
+            case 'Cinza': bgCSS = `background-color: ${c_cinza};`; break;
+            case 'Cinza E Preta': case 'Cinza e Preta': bgCSS = `background: linear-gradient(to bottom, ${c_cinza} 33%, ${c_preta} 33% 66%, ${c_cinza} 66%);`; break;
+            case 'Amarela E Branca': case 'Amarela e Branca': bgCSS = `background: linear-gradient(to bottom, ${c_amarela} 33%, ${c_branca} 33% 66%, ${c_amarela} 66%);`; break;
+            case 'Amarela': bgCSS = `background-color: ${c_amarela};`; break;
+            case 'Amarela E Preta': case 'Amarela e Preta': bgCSS = `background: linear-gradient(to bottom, ${c_amarela} 33%, ${c_preta} 33% 66%, ${c_amarela} 66%);`; break;
+            case 'Laranja E Branca': case 'Laranja e Branca': bgCSS = `background: linear-gradient(to bottom, ${c_laranja} 33%, ${c_branca} 33% 66%, ${c_laranja} 66%);`; break;
+            case 'Laranja': bgCSS = `background-color: ${c_laranja};`; break;
+            case 'Laranja E Preta': case 'Laranja e Preta': bgCSS = `background: linear-gradient(to bottom, ${c_laranja} 33%, ${c_preta} 33% 66%, ${c_laranja} 66%);`; break;
+            case 'Verde E Branca': case 'Verde e Branca': bgCSS = `background: linear-gradient(to bottom, ${c_verde} 33%, ${c_branca} 33% 66%, ${c_verde} 66%);`; break;
+            case 'Verde': bgCSS = `background-color: ${c_verde};`; break;
+            case 'Verde E Preta': case 'Verde e Preta': bgCSS = `background: linear-gradient(to bottom, ${c_verde} 33%, ${c_preta} 33% 66%, ${c_verde} 66%);`; break;
+            case 'Azul': bgCSS = `background-color: ${c_azul};`; break;
+            case 'Roxa': bgCSS = `background-color: ${c_roxa};`; break;
+            case 'Marrom': bgCSS = `background-color: ${c_marrom};`; break;
+            case 'Preta': bgCSS = `background-color: ${c_preta};`; ponteiraCSS = 'bg-red-600 border-x-2 border-white'; graus = ''; break;
+            default: bgCSS = `background-color: ${c_branca};`; break;
+        }
+
+        container.innerHTML = `
+            <div class="h-8 w-full rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] border border-slate-700 flex overflow-hidden relative transform transition-transform hover:scale-105">
+                <div class="flex-1" style="${bgCSS}; box-shadow: inset 0 2px 5px rgba(255,255,255,0.1), inset 0 -3px 6px rgba(0,0,0,0.4);"></div>
+                <div class="w-12 ${ponteiraCSS} flex items-center justify-evenly px-0.5 shadow-[inset_0_2px_4px_rgba(255,255,255,0.2),_inset_0_-2px_4px_rgba(0,0,0,0.4)]">${graus}</div>
+            </div>
+            <p class="text-[10px] text-center text-slate-400 uppercase font-black mt-2 tracking-widest">Faixa ${faixa}</p>
+        `;
+    }
+
     async function verificar(codigoOriginal, tipoForcado = null) {
-        if (!codigoOriginal) { return; } // Ignora cliques vazios sem alert
-        
-        const codigo = codigoOriginal.trim();
-        const codigoUpper = codigo.toUpperCase();
-        
-        esconderTudo();
-        elLoading.classList.remove("hidden");
-        elLoading.classList.add("flex");
+        if (!codigoOriginal) { return; } 
+        const codigo = codigoOriginal.trim(); const codigoUpper = codigo.toUpperCase();
+        esconderTudo(); elLoading.classList.remove("hidden"); elLoading.classList.add("flex");
 
         try {
-            // 1. FORÇADO VIA URL
             if (tipoForcado === 'mat') return await buscarCarteirinha(codigo);
             if (tipoForcado === 'cert') return await buscarDiploma(codigo);
 
-            // 2. BJJ EXAMS HASH
             if (codigoUpper.startsWith("BJJEXAMES-") || codigoUpper.startsWith("BJJ")) {
                 const docSnap = await getDoc(doc(db, "certificados", codigoUpper));
                 if (docSnap.exists()) return preencherCertificadoExams(docSnap.data(), codigoUpper);
-                
                 const qRes = query(collection(db, "resultados"), where("codigo_verificacao", "==", codigoUpper));
                 const snapRes = await getDocs(qRes);
                 if (!snapRes.empty) return preencherCertificadoExamsLegado(snapRes.docs[0].data(), codigoUpper);
             }
 
-            // 3. BUSCA ALUNO
             let snapMat = await getDocs(query(collection(db, "alunos"), where("matricula", "==", codigo)));
             if (!snapMat.empty) return await preencherCarteirinha(snapMat.docs[0].data(), codigo);
-            
-            if (!isNaN(codigo)) {
-                snapMat = await getDocs(query(collection(db, "alunos"), where("matricula", "==", Number(codigo))));
-                if (!snapMat.empty) return await preencherCarteirinha(snapMat.docs[0].data(), codigo);
-            }
-            
+            if (!isNaN(codigo)) { snapMat = await getDocs(query(collection(db, "alunos"), where("matricula", "==", Number(codigo)))); if (!snapMat.empty) return await preencherCarteirinha(snapMat.docs[0].data(), codigo); }
             const dAluno = await getDoc(doc(db, "alunos", codigo));
             if(dAluno.exists()) return await preencherCarteirinha(dAluno.data(), codigo);
 
-            // 4. BUSCA DIPLOMA MANAGER
             let snapCert = await getDocs(query(collection(db, "certificados"), where("numero_serie", "==", codigo)));
             if (!snapCert.empty) return await preencherDiplomaManager(snapCert.docs[0].data(), codigo);
-
-            if (!isNaN(codigo)) {
-                snapCert = await getDocs(query(collection(db, "certificados"), where("numero_serie", "==", Number(codigo))));
-                if (!snapCert.empty) return await preencherDiplomaManager(snapCert.docs[0].data(), codigo);
-            }
+            if (!isNaN(codigo)) { snapCert = await getDocs(query(collection(db, "certificados"), where("numero_serie", "==", Number(codigo)))); if (!snapCert.empty) return await preencherDiplomaManager(snapCert.docs[0].data(), codigo); }
 
             mostrarErro(codigo);
-
-        } catch (e) {
-            console.error("Erro na busca:", e);
-            mostrarErro(codigo);
-        }
+        } catch (e) { console.error("Erro na busca:", e); mostrarErro(codigo); }
     }
 
     async function buscarCarteirinha(codigo) {
         let snap = await getDocs(query(collection(db, "alunos"), where("matricula", "==", codigo)));
         if (!snap.empty) return await preencherCarteirinha(snap.docs[0].data(), codigo);
-        if (!isNaN(codigo)) {
-            snap = await getDocs(query(collection(db, "alunos"), where("matricula", "==", Number(codigo))));
-            if (!snap.empty) return await preencherCarteirinha(snap.docs[0].data(), codigo);
-        }
+        if (!isNaN(codigo)) { snap = await getDocs(query(collection(db, "alunos"), where("matricula", "==", Number(codigo)))); if (!snap.empty) return await preencherCarteirinha(snap.docs[0].data(), codigo); }
         const d = await getDoc(doc(db, "alunos", codigo));
         if(d.exists()) return await preencherCarteirinha(d.data(), codigo);
         mostrarErro(codigo);
@@ -322,17 +335,12 @@
     async function buscarDiploma(codigo) {
         let snap = await getDocs(query(collection(db, "certificados"), where("numero_serie", "==", codigo)));
         if (!snap.empty) return await preencherDiplomaManager(snap.docs[0].data(), codigo);
-        if (!isNaN(codigo)) {
-            snap = await getDocs(query(collection(db, "certificados"), where("numero_serie", "==", Number(codigo))));
-            if (!snap.empty) return await preencherDiplomaManager(snap.docs[0].data(), codigo);
-        }
+        if (!isNaN(codigo)) { snap = await getDocs(query(collection(db, "certificados"), where("numero_serie", "==", Number(codigo)))); if (!snap.empty) return await preencherDiplomaManager(snap.docs[0].data(), codigo); }
         mostrarErro(codigo);
     }
-
-    // PREENCHEDORES DE TELA (Com as cores Premium)
     
     async function preencherCarteirinha(alunoData, matricula) {
-        setTema('#06B6D4', 'rgba(6, 182, 212, 0.08)'); // Cyan Neon
+        setTema('#06B6D4', 'rgba(6, 182, 212, 0.08)'); 
         
         let idEquipe = String(alunoData.equipe_id || alunoData.equipeId || "").trim();
         const elEquipe = document.getElementById('val-equipe');
@@ -343,9 +351,9 @@
         } else { elEquipe.innerText = "ATLETA INDEPENDENTE / SEM EQUIPE"; }
 
         document.getElementById('val-nome').innerText = alunoData.nome || "Atleta";
-        const faixa = alunoData.faixa || 'BRANCA';
-        const grau = (alunoData.grau && alunoData.grau !== 'Sem grau') ? ` - ${alunoData.grau}` : '';
-        document.getElementById('val-faixa').innerText = (faixa + grau).toUpperCase();
+        const faixaStr = alunoData.faixa || 'BRANCA';
+        desenharFaixaVisual(faixaStr, 'visual-faixa-alvo-cart');
+        
         document.getElementById('val-matricula').innerText = alunoData.matricula || matricula;
         
         const elStatus = document.getElementById('val-status');
@@ -360,19 +368,19 @@
             document.getElementById('val-foto-fallback').innerText = (alunoData.nome ? alunoData.nome.charAt(0).toUpperCase() : "?");
         }
 
-        esconderTudo();
-        elCart.classList.remove('hidden'); elCart.classList.add('flex');
+        esconderTudo(); elCart.classList.remove('hidden'); elCart.classList.add('flex');
     }
 
     async function preencherDiplomaManager(certData, serial) {
-        setTema('#3B82F6', 'rgba(59, 130, 246, 0.08)'); // Blue Sapphire
+        setTema('#3B82F6', 'rgba(59, 130, 246, 0.08)'); 
         
         document.getElementById('cert-titulo-main').innerText = "Diploma Oficial";
         document.getElementById('cert-subtitulo-main').innerText = "Autenticidade Verificada";
-        
         document.getElementById('cert-nome-atleta').innerText = certData.nome_aluno || "Atleta";
-        document.getElementById('cert-faixa-concedida').innerText = certData.faixa || "Faixa";
         document.getElementById('cert-serial').innerText = "#" + serial;
+        
+        const faixaStr = certData.faixa || "Branca";
+        desenharFaixaVisual(faixaStr, 'visual-faixa-alvo-cert');
 
         if (certData.data_cerimonia) {
             if (typeof certData.data_cerimonia === 'string') {
@@ -389,7 +397,7 @@
                 const eqData = eqSnap.data();
                 document.getElementById('cert-equipe').innerText = (eqData.nome_equipe || "Academia").toUpperCase();
                 if(eqData.url_logo) {
-                    document.getElementById('cert-icon-container').classList.add('opacity-10'); // Deixa o icone de fundo fraco
+                    document.getElementById('cert-icon-container').classList.add('opacity-10'); 
                     document.getElementById('cert-equipe-logo').src = eqData.url_logo;
                     document.getElementById('cert-equipe-logo').classList.remove('hidden');
                 }
@@ -398,75 +406,55 @@
 
         const extra = document.getElementById('cert-extra-block');
         extra.classList.remove('hidden');
-        extra.innerHTML = `
-            <div class="flex justify-between items-center mt-2 border-t border-slate-700/50 pt-3">
-                <div><span class="data-label">Mestre Assinante</span><span class="data-value text-xs block text-slate-300 uppercase">${certData.prof_responsavel || "--"}</span></div>
-                <div class="text-right"><span class="data-label">Prof. Direto</span><span class="data-value text-xs block text-slate-300 uppercase">${certData.prof_direto || "--"}</span></div>
-            </div>`;
+        extra.innerHTML = `<div class="flex justify-between items-center mt-2 border-t border-slate-700/50 pt-3"><div><span class="data-label">Mestre Assinante</span><span class="data-value text-xs block text-slate-300 uppercase">${certData.prof_responsavel || "--"}</span></div><div class="text-right"><span class="data-label">Prof. Direto</span><span class="data-value text-xs block text-slate-300 uppercase">${certData.prof_direto || "--"}</span></div></div>`;
 
-        esconderTudo();
-        elCert.classList.remove('hidden'); elCert.classList.add('flex');
+        esconderTudo(); elCert.classList.remove('hidden'); elCert.classList.add('flex');
     }
 
     function preencherCertificadoExams(data, hash) {
-        setTema('#10B981', 'rgba(16, 185, 129, 0.08)'); // Emerald Jade
+        setTema('#10B981', 'rgba(16, 185, 129, 0.08)'); 
         
         document.getElementById('cert-titulo-main').innerText = "Certificado de Exame";
         document.getElementById('cert-subtitulo-main').innerText = "Aprovação em Plataforma EAD";
-        
         document.getElementById("cert-nome-atleta").innerText = data.nome_aluno || "Atleta";
-        document.getElementById("cert-faixa-concedida").innerText = data.faixa_alvo || "Faixa";
         document.getElementById("cert-equipe").innerText = data.equipe_origem || "Academia Oficial";
         document.getElementById("cert-serial").innerText = hash;
         
-        if(data.emitido_em && data.emitido_em.seconds) {
-            document.getElementById("cert-data-cerimonia").innerText = new Date(data.emitido_em.seconds * 1000).toLocaleDateString('pt-BR');
-        } else { document.getElementById("cert-data-cerimonia").innerText = "--/--/----"; }
+        const faixaStr = data.faixa_alvo || "Branca";
+        desenharFaixaVisual(faixaStr, 'visual-faixa-alvo-cert');
+
+        if(data.emitido_em && data.emitido_em.seconds) { document.getElementById("cert-data-cerimonia").innerText = new Date(data.emitido_em.seconds * 1000).toLocaleDateString('pt-BR'); } else { document.getElementById("cert-data-cerimonia").innerText = "--/--/----"; }
 
         if(data.nota_final !== undefined) {
-            const extra = document.getElementById('cert-extra-block');
-            extra.classList.remove('hidden');
-            extra.innerHTML = `<div class="mt-2 border-t border-slate-700/50 pt-3"><span class="data-label">Aproveitamento</span><span class="data-value block font-black text-emerald-400 text-sm uppercase">${data.nota_final}% de Acertos Teóricos</span></div>`;
-        } else {
-            document.getElementById('cert-extra-block').classList.add('hidden');
-        }
+            const extra = document.getElementById('cert-extra-block'); extra.classList.remove('hidden'); extra.innerHTML = `<div class="mt-2 border-t border-slate-700/50 pt-3"><span class="data-label">Aproveitamento</span><span class="data-value block font-black text-emerald-400 text-sm uppercase">${data.nota_final}% de Acertos Teóricos</span></div>`;
+        } else { document.getElementById('cert-extra-block').classList.add('hidden'); }
 
-        esconderTudo();
-        elCert.classList.remove("hidden"); elCert.classList.add("flex");
+        esconderTudo(); elCert.classList.remove("hidden"); elCert.classList.add("flex");
     }
 
     function preencherCertificadoExamsLegado(data, hash) {
         setTema('#10B981', 'rgba(16, 185, 129, 0.08)'); 
-        document.getElementById('cert-titulo-main').innerText = "Certificado Válido (Legado)";
-        document.getElementById('cert-subtitulo-main').innerText = "Aprovação EAD Antiga";
-        
+        document.getElementById('cert-titulo-main').innerText = "Certificado Válido (Legado)"; document.getElementById('cert-subtitulo-main').innerText = "Aprovação EAD Antiga";
         document.getElementById("cert-nome-atleta").innerText = data.usuario ? data.usuario.toUpperCase() : "N/A";
-        document.getElementById("cert-faixa-concedida").innerText = data.faixa ? data.faixa.toUpperCase() : "N/A";
-        document.getElementById("cert-equipe").innerText = "BJJ Exams (Sistema Antigo)";
-        document.getElementById("cert-serial").innerText = hash;
+        document.getElementById("cert-equipe").innerText = "BJJ Exams (Sistema Antigo)"; document.getElementById("cert-serial").innerText = hash;
 
-        if(data.data && data.data.seconds) {
-            document.getElementById("cert-data-cerimonia").innerText = new Date(data.data.seconds * 1000).toLocaleDateString('pt-BR');
-        } else { document.getElementById("cert-data-cerimonia").innerText = "--/--/----"; }
-        
+        const faixaStr = data.faixa || "Branca";
+        desenharFaixaVisual(faixaStr, 'visual-faixa-alvo-cert');
+
+        if(data.data && data.data.seconds) { document.getElementById("cert-data-cerimonia").innerText = new Date(data.data.seconds * 1000).toLocaleDateString('pt-BR'); } else { document.getElementById("cert-data-cerimonia").innerText = "--/--/----"; }
         document.getElementById('cert-extra-block').classList.add('hidden');
 
-        esconderTudo();
-        elCert.classList.remove("hidden"); elCert.classList.add("flex");
+        esconderTudo(); elCert.classList.remove("hidden"); elCert.classList.add("flex");
     }
 
     function mostrarErro(codigo) {
-        setTema('#F43F5E', 'rgba(244, 63, 94, 0.04)'); // Red Error
-        esconderTudo();
-        document.getElementById('erro-codigo-mostrado').innerText = codigo || "CÓDIGO AUSENTE";
-        elErro.classList.remove('hidden'); elErro.classList.add('flex');
+        setTema('#F43F5E', 'rgba(244, 63, 94, 0.04)'); 
+        esconderTudo(); document.getElementById('erro-codigo-mostrado').innerText = codigo || "CÓDIGO AUSENTE"; elErro.classList.remove('hidden'); elErro.classList.add('flex');
     }
 
-    // Gatilhos de Busca
     document.getElementById("btn-buscar").addEventListener("click", () => verificar(document.getElementById("input-busca").value));
     document.getElementById("input-busca").addEventListener("keypress", (e) => { if (e.key === "Enter") verificar(e.target.value); });
 
-    // Inicialização
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
         const matriculaUrl = params.get("mat");
@@ -476,13 +464,7 @@
         if (matriculaUrl) verificar(matriculaUrl, 'mat');
         else if (certificadoUrl) verificar(certificadoUrl, 'cert');
         else if (hashUrl) verificar(hashUrl);
-        else {
-            esconderTudo();
-            elManual.classList.remove("hidden");
-            elManual.classList.add("flex");
-        }
-        
-        // Coloca o cursor direto no input para agilizar no Desktop
+        else { esconderTudo(); elManual.classList.remove("hidden"); elManual.classList.add("flex"); }
         setTimeout(()=> document.getElementById('input-busca').focus(), 300);
     }
   </script>
