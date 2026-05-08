@@ -12,31 +12,22 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
         
-        /* 🔥 Fundo Tecnológico Premium em PURO CSS (Zero imagens) */
         body { 
             font-family: 'Inter', sans-serif; 
             background-color: #02040a;
-            background-image: 
-                /* Luz Dourada no Topo */
-                radial-gradient(circle at 50% 0%, rgba(234, 179, 8, 0.15) 0%, transparent 50%),
-                /* Luz Ciano no Fundo */
-                radial-gradient(circle at 100% 100%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
-                /* Grade Principal */
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                /* Diagonais Estilo Circuito */
-                linear-gradient(45deg, rgba(255, 255, 255, 0.015) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.015) 75%, rgba(255, 255, 255, 0.015)),
-                linear-gradient(-45deg, rgba(255, 255, 255, 0.015) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.015) 75%, rgba(255, 255, 255, 0.015));
-            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px, 80px 80px, 80px 80px;
-            background-position: center center;
+            /* 🔥 Imagem de fundo real (certifique-se de salvar o arquivo image_286b58.jpg como fundo_tech.jpg) */
+            background-image: url('imagens/fundo_tech.jpg');
+            background-size: cover;
+            background-position: center;
             background-attachment: fixed;
+            background-repeat: no-repeat;
         }
 
-        /* Máscara escura central para facilitar a leitura */
+        /* Máscara escura para garantir que o texto fique legível sobre o circuito */
         .bg-overlay {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at center, transparent 0%, rgba(2, 4, 10, 0.8) 100%);
+            background: radial-gradient(circle at center, rgba(2, 6, 23, 0.4) 0%, rgba(2, 6, 23, 0.98) 100%);
             z-index: -1;
             pointer-events: none;
         }
@@ -94,7 +85,7 @@
         <div class="max-w-5xl mx-auto px-4 relative z-10 text-center flex flex-col items-center">
             
             <div class="animate-float mb-10 relative">
-                <div class="absolute inset-0 bg-yellow-500/20 blur-[60px] rounded-full pointer-events-none"></div>
+                <div class="absolute inset-0 bg-yellow-500/20 blur-[50px] rounded-full pointer-events-none"></div>
                 <img src="imagens/logo_bjj_digital_OFC.png" alt="BJJ Digital Master Logo" class="relative h-36 md:h-52 w-auto object-contain filter drop-shadow-[0_0_25px_rgba(234,179,8,0.6)] hover:scale-105 transition-transform duration-500">
             </div>
 
@@ -207,7 +198,7 @@
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
             <div class="flex flex-col md:flex-row items-center gap-4 justify-center md:justify-start">
-                <img src="imagens/logo_bjj_digital_OFC.png" alt="BJJ Digital" class="h-10 w-auto object-contain opacity-60 hover:opacity-100 filter hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)] transition-all duration-500">
+                <img src="imagens/logo_bjj_digital_OFC.png" alt="BJJ Digital" class="h-10 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(234,179,8,0.4)] opacity-80 hover:opacity-100 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)] transition-all duration-500">
                 <span class="font-black text-slate-500 tracking-widest uppercase text-xs">BJJ Digital &copy; 2026</span>
             </div>
             
