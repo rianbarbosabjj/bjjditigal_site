@@ -12,23 +12,31 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
         
-        /* 🔥 Fundo Tecnológico em PURO CSS (Sem necessidade de imagens externas) */
+        /* 🔥 Fundo Tecnológico Premium em PURO CSS (Zero imagens) */
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: #02040a; /* Fundo hiper escuro */
+            background-color: #02040a;
             background-image: 
+                /* Luz Dourada no Topo */
+                radial-gradient(circle at 50% 0%, rgba(234, 179, 8, 0.15) 0%, transparent 50%),
+                /* Luz Ciano no Fundo */
+                radial-gradient(circle at 100% 100%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
+                /* Grade Principal */
                 linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                /* Diagonais Estilo Circuito */
+                linear-gradient(45deg, rgba(255, 255, 255, 0.015) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.015) 75%, rgba(255, 255, 255, 0.015)),
+                linear-gradient(-45deg, rgba(255, 255, 255, 0.015) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.015) 75%, rgba(255, 255, 255, 0.015));
+            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px, 80px 80px, 80px 80px;
             background-position: center center;
             background-attachment: fixed;
         }
 
-        /* Máscara escura nas bordas para dar profundidade e foco no centro */
+        /* Máscara escura central para facilitar a leitura */
         .bg-overlay {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at center, transparent 0%, #02040a 100%);
+            background: radial-gradient(circle at center, transparent 0%, rgba(2, 4, 10, 0.8) 100%);
             z-index: -1;
             pointer-events: none;
         }
