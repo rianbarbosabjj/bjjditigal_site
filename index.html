@@ -3,49 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BJJ Digital | Tecnologia e praticidade para quem ensina o Jiu-Jitsu</title>
+    <title>BJJ Digital | O Ecossistema Tecnológico do Jiu-Jitsu</title>
     
     <meta name="description" content="A BJJ Digital conecta gestão de academias, ensino a distância e organização de competições em um único ecossistema inteligente.">
-    <link rel="icon" type="image/png" href="imagens/logo_bjj_digital_OFC.png">
+    <link rel="icon" type="image/png" href="logo_bjj_digital_OFC.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #020617; } /* Fundo Slate ultra escuro/tech */
+        body { font-family: 'Inter', sans-serif; background-color: #020617; }
         
         .bg-grid-pattern { 
-            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px); 
-            background-size: 30px 30px; 
+            background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px); 
+            background-size: 32px 32px; 
         }
         
-        /* Animações de flutuação suave */
+        /* Flutuação da Logo */
         @keyframes float {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-12px); }
             100% { transform: translateY(0px); }
         }
         .animate-float { animation: float 6s ease-in-out infinite; }
         
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.05); }
+        /* Orbes Atmosféricos */
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
         }
-        .animate-pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
+        .animate-blob { animation: blob 10s infinite; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
     </style>
 </head>
 <body class="text-slate-200 overflow-x-hidden selection:bg-yellow-500 selection:text-black">
 
-    <nav class="fixed w-full z-50 bg-slate-950/80 backdrop-blur-xl border-b border-white/5">
+    <nav class="fixed w-full z-50 bg-slate-950/70 backdrop-blur-xl border-b border-white/5 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center gap-3 cursor-pointer group">
-                    <img src="imagens/logo_bjj_digital_OFC.png" alt="BJJ Digital Logo" class="h-10 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(234,179,8,0.5)] group-hover:drop-shadow-[0_0_12px_rgba(234,179,8,0.8)] transition-all">
-                    <span class="font-black text-white text-lg tracking-widest uppercase hidden sm:block">BJJ Digital</span>
+                    <img src="logo_bjj_digital_OFC.png" alt="BJJ Digital Logo" class="h-10 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(234,179,8,0.5)] group-hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)] transition-all duration-300">
+                    <span class="font-black text-white text-lg tracking-widest uppercase hidden sm:block group-hover:text-yellow-400 transition-colors duration-300">BJJ Digital</span>
                 </div>
                 
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-6">
                     <a href="#solucoes" class="text-xs font-bold text-slate-400 hover:text-yellow-400 transition-colors uppercase tracking-widest hidden md:block">Nossas Soluções</a>
-                    <a href="bjjmanager/index.html" class="bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-black px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-[0_0_15px_rgba(234,179,8,0.3)] transition-all transform hover:-translate-y-0.5">
+                    <a href="bjjmanager/index.html" class="bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(234,179,8,0.4)] hover:shadow-[0_0_30px_rgba(234,179,8,0.6)] transition-all transform hover:-translate-y-0.5">
                         Acessar o Manager
                     </a>
                 </div>
@@ -53,32 +58,39 @@
         </div>
     </nav>
 
-    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex flex-col items-center justify-center min-h-[80vh]">
-        <div class="absolute inset-0 bg-grid-pattern opacity-30"></div>
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex flex-col items-center justify-center min-h-[85vh]">
+        <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
         
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-500/10 blur-[120px] rounded-full pointer-events-none animate-pulse-glow"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl flex justify-center opacity-40 pointer-events-none mix-blend-screen filter blur-[100px]">
+            <div class="w-72 h-72 bg-yellow-500 rounded-full animate-blob"></div>
+            <div class="w-72 h-72 bg-amber-600 rounded-full animate-blob animation-delay-2000 -ml-20 mt-20"></div>
+            <div class="w-72 h-72 bg-yellow-300 rounded-full animate-blob animation-delay-4000 -ml-40 -mt-20"></div>
+        </div>
         
         <div class="max-w-5xl mx-auto px-4 relative z-10 text-center flex flex-col items-center">
             
-            <div class="animate-float mb-8">
-                <img src="imagens/logo_bjj_digital_OFC.png" alt="BJJ Digital Master Logo" class="h-32 md:h-48 w-auto object-contain filter drop-shadow-[0_0_35px_rgba(234,179,8,0.4)] hover:drop-shadow-[0_0_50px_rgba(234,179,8,0.6)] transition-all duration-500">
+            <div class="animate-float mb-10 relative">
+                <div class="absolute inset-0 bg-yellow-500/20 blur-[50px] rounded-full"></div>
+                <img src="logo_bjj_digital_OFC.png" alt="BJJ Digital Master Logo" class="relative h-36 md:h-52 w-auto object-contain filter drop-shadow-[0_0_25px_rgba(234,179,8,0.6)] hover:scale-105 transition-transform duration-500">
             </div>
 
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/50 border border-yellow-500/30 text-[10px] font-black uppercase tracking-widest text-yellow-400 mb-6 backdrop-blur-md">
-                <span>🌐</span> Ecossistema Integrado
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-slate-900/80 border border-yellow-500/40 text-[10px] font-black uppercase tracking-widest text-yellow-400 mb-8 backdrop-blur-md shadow-[0_0_15px_rgba(234,179,8,0.15)]">
+                <span class="relative flex h-2 w-2 mr-1"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span></span>
+                O Ecossistema Definitivo
             </div>
             
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6 tracking-tighter">
-                O Futuro do <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-amber-300">Jiu-Jitsu</span>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight mb-6 tracking-tighter">
+                O Futuro do <br class="md:hidden">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-500 to-amber-500 drop-shadow-sm">Jiu-Jitsu</span>
             </h1>
             
-            <p class="mt-4 text-lg md:text-xl text-slate-400 max-w-3xl mx-auto font-medium leading-relaxed">
-                Gestão de Academias, Plataforma de Ensino e Organização de Competições. A <b>BJJ Digital</b> oferece a infraestrutura tecnológica definitiva para professores, atletas e promotores de eventos.
+            <p class="mt-6 text-lg md:text-2xl text-slate-400 max-w-3xl mx-auto font-medium leading-relaxed">
+                Gestão de Academias, Ensino a Distância e Competições. Nós construímos a infraestrutura tecnológica para a evolução do seu tatame.
             </p>
 
-            <div class="mt-12 animate-bounce">
-                <a href="#solucoes" class="text-slate-500 hover:text-yellow-400 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 mx-auto">
+            <div class="mt-16 animate-bounce">
+                <a href="#solucoes" class="text-slate-600 hover:text-yellow-500 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10 mx-auto">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                     </svg>
                 </a>
@@ -86,79 +98,79 @@
         </div>
     </section>
 
-    <section id="solucoes" class="py-24 bg-slate-950 relative border-t border-slate-900">
+    <section id="solucoes" class="py-24 md:py-32 bg-slate-950 relative border-t border-slate-900/50 shadow-[inset_0_20px_50px_rgba(0,0,0,0.5)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div class="text-center mb-20">
-                <h2 class="text-3xl md:text-5xl font-black text-white mb-4">Três Pilares. <br class="md:hidden">Uma Marca.</h2>
-                <p class="text-slate-400 font-medium text-lg">Descubra as soluções que compõem o nosso ecossistema.</p>
+            <div class="text-center mb-24">
+                <h2 class="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">Três Pilares. <br class="md:hidden">Uma Marca.</h2>
+                <p class="text-slate-400 font-medium text-lg md:text-xl max-w-2xl mx-auto">Soluções independentes que se conectam para formar a plataforma mais robusta do mercado.</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10">
                 
-                <div class="bg-slate-900 rounded-[2rem] border border-cyan-500/20 p-8 shadow-xl hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] hover:border-cyan-500/40 transition-all flex flex-col relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 w-48 h-48 bg-cyan-500/10 blur-[60px] group-hover:bg-cyan-500/20 transition-all rounded-full pointer-events-none"></div>
+                <div class="bg-slate-900/80 backdrop-blur-sm rounded-[2.5rem] border border-cyan-500/20 p-8 lg:p-10 shadow-2xl hover:shadow-[0_20px_50px_rgba(6,182,212,0.15)] hover:border-cyan-500/50 hover:-translate-y-2 transition-all duration-300 flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 blur-[80px] group-hover:bg-cyan-500/20 transition-all rounded-full pointer-events-none"></div>
                     
-                    <div class="flex justify-between items-start mb-6">
-                        <img src="imagens/logo_bjj_maneger_ofc.png" alt="BJJ Manager" class="h-24 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(6,182,212,0.5)] group-hover:drop-shadow-[0_0_25px_rgba(6,182,212,0.8)] transition-all">
-                        <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 shrink-0 ml-2">
-                            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> Disponível
+                    <div class="flex justify-between items-start mb-8 relative z-10">
+                        <img src="logo_bjj_maneger_ofc.png" alt="BJJ Manager" class="h-28 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(6,182,212,0.5)] group-hover:drop-shadow-[0_0_25px_rgba(6,182,212,0.8)] transition-all group-hover:scale-105">
+                        <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shrink-0 shadow-[0_0_10px_rgba(6,182,212,0.2)]">
+                            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> Online
                         </span>
                     </div>
                     
-                    <h3 class="text-2xl font-black text-white mb-2">BJJ Manager</h3>
-                    <p class="text-cyan-500 font-bold text-xs uppercase tracking-widest mb-6">Gestão de Academias</p>
+                    <h3 class="text-3xl font-black text-white mb-2 relative z-10">BJJ Manager</h3>
+                    <p class="text-cyan-500 font-bold text-xs uppercase tracking-widest mb-6 relative z-10">Gestão de Academias</p>
                     
-                    <p class="text-slate-400 text-sm mb-8 flex-1 leading-relaxed">
-                        O sistema mais completo do mercado para academias de Jiu-Jitsu. Portal do aluno exclusivo (App), controle financeiro automatizado (PIX/Cartão), emissão de certificados oficiais e check-in por geolocalização.
+                    <p class="text-slate-400 text-sm mb-10 flex-1 leading-relaxed relative z-10">
+                        O sistema mais avançado para academias. Portal do aluno em App, controle financeiro com baixa automática (PIX/Cartão), emissão de certificados oficiais e check-in inteligente via geolocalização.
                     </p>
                     
-                    <a href="bjjmanager/index.html" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-black py-4 rounded-xl text-center text-xs uppercase tracking-widest transition-all transform group-hover:-translate-y-1 shadow-lg shadow-cyan-600/20">
-                        Conhecer o Sistema
+                    <a href="bjjmanager/index.html" class="relative z-10 w-full bg-cyan-600 hover:bg-cyan-500 text-white font-black py-4 rounded-2xl text-center text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] border border-cyan-400/50">
+                        Acessar Sistema Completo
                     </a>
                 </div>
 
-                <div class="bg-slate-900 rounded-[2rem] border border-emerald-500/10 p-8 flex flex-col relative overflow-hidden group opacity-95 hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] transition-all">
-                    <div class="absolute top-0 right-0 w-48 h-48 bg-emerald-500/5 blur-[60px] group-hover:bg-emerald-500/10 transition-all rounded-full pointer-events-none"></div>
+                <div class="bg-slate-900/50 backdrop-blur-sm rounded-[2.5rem] border border-slate-800 p-8 lg:p-10 shadow-xl hover:shadow-[0_20px_50px_rgba(16,185,129,0.08)] hover:border-emerald-500/30 hover:-translate-y-2 transition-all duration-300 flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[80px] group-hover:bg-emerald-500/15 transition-all rounded-full pointer-events-none"></div>
                     
-                    <div class="flex justify-between items-start mb-6">
-                        <img src="imagens/logo_bjj_exams_ofc.png" alt="BJJ Exams" class="h-24 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(16,185,129,0.3)] group-hover:drop-shadow-[0_0_25px_rgba(16,185,129,0.6)] transition-all">
-                        <span class="bg-slate-800 text-slate-400 border border-slate-700 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 shrink-0 ml-2">
-                            🚧 Construção
+                    <div class="flex justify-between items-start mb-8 relative z-10">
+                        <img src="logo_bjj_exams_ofc.png" alt="BJJ Exams" class="h-28 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(16,185,129,0.2)] group-hover:drop-shadow-[0_0_25px_rgba(16,185,129,0.5)] transition-all grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105">
+                        <span class="bg-slate-950 text-slate-500 border border-slate-800 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shrink-0">
+                            ⏳ Em Breve
                         </span>
                     </div>
                     
-                    <h3 class="text-2xl font-black text-white mb-2">BJJ Exams</h3>
-                    <p class="text-emerald-500 font-bold text-xs uppercase tracking-widest mb-6">Plataforma E-Learning</p>
+                    <h3 class="text-3xl font-black text-white mb-2 relative z-10">BJJ Exams</h3>
+                    <p class="text-emerald-500/80 font-bold text-xs uppercase tracking-widest mb-6 relative z-10 group-hover:text-emerald-400 transition-colors">Plataforma E-Learning</p>
                     
-                    <p class="text-slate-400 text-sm mb-8 flex-1 leading-relaxed">
-                        Eleve o nível técnico da sua equipe. Uma plataforma completa de ensino a distância para disponibilizar currículos em vídeo, realizar exames teóricos de graduação e garantir a padronização da sua metodologia.
+                    <p class="text-slate-500 text-sm mb-10 flex-1 leading-relaxed relative z-10 group-hover:text-slate-400 transition-colors">
+                        Eleve o nível técnico da sua equipe. Uma plataforma de ensino a distância focada no Jiu-Jitsu para hospedar currículos em vídeo, realizar provas teóricas de graduação e padronizar metodologias.
                     </p>
                     
-                    <button disabled class="w-full bg-slate-950 text-slate-500 border border-slate-800 font-black py-4 rounded-xl text-center text-xs uppercase tracking-widest cursor-not-allowed flex items-center justify-center gap-2">
-                        <span>Lançamento em Breve</span> ⏳
+                    <button disabled class="relative z-10 w-full bg-slate-950/80 text-slate-500 border border-slate-800/50 font-black py-4 rounded-2xl text-center text-xs uppercase tracking-widest cursor-not-allowed flex items-center justify-center gap-2 backdrop-blur-sm group-hover:border-emerald-500/20 group-hover:text-emerald-500/50 transition-colors">
+                        <span>🔒 Acesso Fechado</span>
                     </button>
                 </div>
 
-                <div class="bg-slate-900 rounded-[2rem] border border-rose-600/10 p-8 flex flex-col relative overflow-hidden group opacity-95 hover:border-rose-600/30 hover:shadow-[0_0_30px_rgba(225,29,72,0.1)] transition-all">
-                    <div class="absolute top-0 right-0 w-48 h-48 bg-rose-600/5 blur-[60px] group-hover:bg-rose-600/10 transition-all rounded-full pointer-events-none"></div>
+                <div class="bg-slate-900/50 backdrop-blur-sm rounded-[2.5rem] border border-slate-800 p-8 lg:p-10 shadow-xl hover:shadow-[0_20px_50px_rgba(225,29,72,0.08)] hover:border-rose-600/30 hover:-translate-y-2 transition-all duration-300 flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-rose-600/5 blur-[80px] group-hover:bg-rose-600/15 transition-all rounded-full pointer-events-none"></div>
                     
-                    <div class="flex justify-between items-start mb-6">
-                        <img src="imagens/logo_bjj_arena_ofc.png" alt="BJJ Arena" class="h-24 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(225,29,72,0.3)] group-hover:drop-shadow-[0_0_25px_rgba(225,29,72,0.6)] transition-all">
-                        <span class="bg-slate-800 text-slate-400 border border-slate-700 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 shrink-0 ml-2">
-                            🚧 Construção
+                    <div class="flex justify-between items-start mb-8 relative z-10">
+                        <img src="logo_bjj_arena_ofc.png" alt="BJJ Arena" class="h-28 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(225,29,72,0.2)] group-hover:drop-shadow-[0_0_25px_rgba(225,29,72,0.5)] transition-all grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105">
+                        <span class="bg-slate-950 text-slate-500 border border-slate-800 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shrink-0">
+                            ⏳ Em Breve
                         </span>
                     </div>
                     
-                    <h3 class="text-2xl font-black text-white mb-2">BJJ Arena</h3>
-                    <p class="text-rose-600 font-bold text-xs uppercase tracking-widest mb-6">Gestão de Competições</p>
+                    <h3 class="text-3xl font-black text-white mb-2 relative z-10">BJJ Arena</h3>
+                    <p class="text-rose-600/80 font-bold text-xs uppercase tracking-widest mb-6 relative z-10 group-hover:text-rose-500 transition-colors">Gestão de Competições</p>
                     
-                    <p class="text-slate-400 text-sm mb-8 flex-1 leading-relaxed">
-                        A solução definitiva para promotores de eventos. Inscrições automáticas, geração inteligente de chaves (brackets), cronômetros digitais, placar em tempo real e banco de dados oficial de atletas federados.
+                    <p class="text-slate-500 text-sm mb-10 flex-1 leading-relaxed relative z-10 group-hover:text-slate-400 transition-colors">
+                        A solução definitiva para promotores de eventos. Inscrições automáticas, chaves dinâmicas (brackets), cronômetros digitais integrados, placar em tempo real e checagem oficial de atletas.
                     </p>
                     
-                    <button disabled class="w-full bg-slate-950 text-slate-500 border border-slate-800 font-black py-4 rounded-xl text-center text-xs uppercase tracking-widest cursor-not-allowed flex items-center justify-center gap-2">
-                        <span>Lançamento em Breve</span> ⏳
+                    <button disabled class="relative z-10 w-full bg-slate-950/80 text-slate-500 border border-slate-800/50 font-black py-4 rounded-2xl text-center text-xs uppercase tracking-widest cursor-not-allowed flex items-center justify-center gap-2 backdrop-blur-sm group-hover:border-rose-500/20 group-hover:text-rose-500/50 transition-colors">
+                        <span>🔒 Acesso Fechado</span>
                     </button>
                 </div>
 
@@ -166,19 +178,22 @@
         </div>
     </section>
 
-    <footer class="bg-slate-950 py-12 border-t border-slate-900 text-center md:text-left">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center gap-3 justify-center md:justify-start">
-                <img src="imagens/logo_bjj_digital_OFC.png" alt="BJJ Digital" class="h-8 w-auto object-contain opacity-50 hover:opacity-100 filter hover:drop-shadow-[0_0_8px_rgba(234,179,8,0.5)] transition-all">
-                <span class="font-black text-slate-500 tracking-widest uppercase text-xs">BJJ Digital &copy; 2026</span>
+    <footer class="bg-black py-16 border-t border-white/10 text-center md:text-left relative overflow-hidden">
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-32 bg-yellow-500/5 blur-[80px] rounded-t-full pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
+            <div class="flex flex-col md:flex-row items-center gap-4 justify-center md:justify-start">
+                <img src="logo_bjj_digital_OFC.png" alt="BJJ Digital" class="h-10 w-auto object-contain opacity-40 hover:opacity-100 filter hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.6)] transition-all duration-500">
+                <span class="font-black text-slate-600 tracking-widest uppercase text-xs">BJJ Digital &copy; 2026</span>
             </div>
             
-            <div class="text-slate-600 text-xs font-medium">
-                Tecnologia de ponta para a evolução do Jiu-Jitsu.
+            <div class="text-slate-500 text-xs font-bold uppercase tracking-widest">
+                Tecnologia de ponta para o Jiu-Jitsu.
             </div>
             
-            <div class="flex gap-4 justify-center">
-                <a href="#" class="text-slate-600 hover:text-yellow-500 transition-colors text-xs font-bold uppercase tracking-widest">Contato</a>
+            <div class="flex gap-6 justify-center">
+                <a href="#" class="text-slate-600 hover:text-yellow-500 transition-colors text-xs font-black uppercase tracking-widest">Contato</a>
+                <a href="#" class="text-slate-600 hover:text-yellow-500 transition-colors text-xs font-black uppercase tracking-widest">Instagram</a>
             </div>
         </div>
     </footer>
