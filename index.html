@@ -10,317 +10,224 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800;14..32,900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: #010101;
-            background-image: radial-gradient(circle at 15% 30%, rgba(234, 179, 8, 0.08) 0%, #010101 80%);
-            position: relative;
+            background-color: #040508; /* Fundo hiper escuro premium */
+            color: #e2e8f0;
+            overflow-x: hidden;
         }
 
-        /* Overlay dinâmico com textura de tatame sutil */
+        /* Máscara de ruído muito sutil para textura */
         .noise-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
             pointer-events: none;
-            z-index: 0;
+            z-index: 50;
         }
 
+        /* Efeito Vidro nas seções de conteúdo */
         .glass-card {
-            background: rgba(2, 6, 23, 0.68);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            background: rgba(10, 12, 20, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .card-glow-manager:hover {
-            border-color: rgba(6, 182, 212, 0.8);
-            box-shadow: 0 20px 40px -12px rgba(6, 182, 212, 0.35), 0 0 0 1px rgba(6, 182, 212, 0.2);
-            transform: translateY(-6px);
+        /* Botão Dourado */
+        .btn-gold {
+            background: linear-gradient(to right, #d97706, #eab308, #d97706);
+            background-size: 200% auto;
+            color: #000;
+            transition: 0.5s;
+            box-shadow: 0 0 20px rgba(234, 179, 8, 0.3);
         }
-        
-        .card-glow-exams:hover {
-            border-color: rgba(16, 185, 129, 0.7);
-            box-shadow: 0 20px 40px -12px rgba(16, 185, 129, 0.3), 0 0 0 1px rgba(16, 185, 129, 0.2);
-            transform: translateY(-6px);
-        }
-        
-        .card-glow-arena:hover {
-            border-color: rgba(244, 63, 94, 0.7);
-            box-shadow: 0 20px 40px -12px rgba(244, 63, 94, 0.3), 0 0 0 1px rgba(244, 63, 94, 0.2);
-            transform: translateY(-6px);
+        .btn-gold:hover {
+            background-position: right center;
+            box-shadow: 0 0 30px rgba(234, 179, 8, 0.5);
+            transform: translateY(-2px);
         }
 
-        .btn-primary-gradient {
-            background: linear-gradient(105deg, #eab308 0%, #d97706 100%);
-            box-shadow: 0 8px 20px -6px rgba(234, 179, 8, 0.5);
-            transition: all 0.2s ease;
-        }
-        .btn-primary-gradient:hover {
-            transform: scale(1.02);
-            box-shadow: 0 12px 28px -8px rgba(234, 179, 8, 0.7);
-            background: linear-gradient(105deg, #facc15 0%, #eab308 100%);
-        }
-
-        .floating {
-            animation: floating 5s ease-in-out infinite;
-        }
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 3px;
-            background: linear-gradient(90deg, #eab308, #f97316);
-            z-index: 999;
-            transition: width 0.1s ease;
-        }
-
-        /* texto gradiente */
+        /* Textos e Gradientes */
         .text-gradient-gold {
-            background: linear-gradient(135deg, #FFE484 0%, #F59E0B 100%);
+            background: linear-gradient(to right, #fde047, #eab308);
             -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            -webkit-text-fill-color: transparent;
         }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #040508; }
+        ::-webkit-scrollbar-thumb { background: #eab308; border-radius: 10px; }
     </style>
 </head>
-<body class="text-gray-200 selection:bg-yellow-500/40 selection:text-black">
+<body class="selection:bg-yellow-500/30 selection:text-yellow-200">
 
-<div class="scroll-progress" id="progressBar"></div>
 <div class="noise-overlay"></div>
 
-<nav class="fixed w-full z-50 transition-all duration-500 bg-black/30 backdrop-blur-2xl border-b border-white/10 shadow-2xl">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16 md:h-20">
-            <div class="flex items-center gap-3 group cursor-pointer">
-                <img src="imagens/logo_bjj_digital_OFC.png" alt="BJJ Digital" class="h-9 md:h-11 w-auto drop-shadow-[0_0_8px_rgba(234,179,8,0.6)] transition-all duration-500 group-hover:drop-shadow-[0_0_20px_rgba(234,179,8,0.9)] group-hover:scale-105">
-                <span class="font-black text-base md:text-xl tracking-widest hidden sm:block bg-gradient-to-r from-white to-yellow-300 bg-clip-text text-transparent">BJJ DIGITAL</span>
+<nav class="fixed w-full z-40 bg-black/40 backdrop-blur-md border-b border-white/5 transition-all duration-500">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center gap-4 cursor-pointer group">
+                <img src="imagens/logo_bjj_digital_OFC.png" alt="BJJ Digital" class="h-10 w-auto drop-shadow-[0_0_10px_rgba(234,179,8,0.4)] group-hover:scale-105 transition-transform duration-300">
+                <span class="font-black text-white tracking-[0.2em] text-sm hidden md:block">BJJ DIGITAL</span>
             </div>
-            <div class="flex items-center gap-4">
-                <a href="#solucoes" class="text-xs font-semibold text-gray-300 hover:text-yellow-400 transition-colors uppercase tracking-wider hidden md:flex items-center gap-1"><i class="fas fa-th-large text-[10px]"></i> Soluções</a>
-                <a href="https://maneger.bjjdigital.com.br" target="_blank" class="relative overflow-hidden group bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-black px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
-                    <i class="fas fa-crown text-[12px]"></i> Manager PRO
-                </a>
+            <div class="hidden md:flex items-center gap-8 text-[11px] font-bold tracking-widest uppercase text-gray-400">
+                <a href="#" class="text-yellow-500 hover:text-yellow-400 transition-colors">Início</a>
+                <a href="#solucoes" class="hover:text-white transition-colors flex items-center gap-1">Soluções <i class="fas fa-chevron-down text-[9px]"></i></a>
+                <a href="#" class="hover:text-white transition-colors">Sobre</a>
+                <a href="#" class="hover:text-white transition-colors">Contato</a>
             </div>
         </div>
     </div>
 </nav>
 
-<section class="relative pt-28 pb-20 md:pt-40 md:pb-32 overflow-hidden flex items-center justify-center min-h-[90vh]">
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl flex justify-center opacity-40 pointer-events-none">
-        <div class="w-96 h-96 bg-yellow-500/30 rounded-full blur-[120px] animate-pulse"></div>
-        <div class="w-80 h-80 bg-amber-600/20 rounded-full blur-[100px] animate-pulse delay-1000 -ml-56"></div>
+<section class="relative min-h-screen flex flex-col items-center justify-center pt-24 pb-16 overflow-hidden">
+    
+    <div class="absolute inset-0 flex justify-center items-center opacity-[0.03] md:opacity-[0.04] pointer-events-none z-0">
+        <img src="imagens/logo_bjj_digital_OFC.png" alt="Fundo" class="w-[1200px] max-w-none object-contain">
     </div>
     
-    <div class="max-w-6xl mx-auto px-6 relative z-10 text-center">
-        <div class="floating inline-block mb-6 relative">
-            <div class="absolute inset-0 bg-yellow-500/30 blur-3xl rounded-full"></div>
-            <img src="imagens/logo_bjj_digital_OFC.png" alt="BJJ Digital Core" class="relative h-28 md:h-44 w-auto drop-shadow-2xl transform hover:scale-105 transition duration-700">
-        </div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-yellow-500/5 rounded-full blur-[100px] pointer-events-none z-0"></div>
 
-        <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/5 backdrop-blur-lg border border-yellow-500/50 text-[10px] font-black uppercase tracking-widest text-yellow-400 mb-7 shadow-lg">
-            <span class="relative flex h-2 w-2"><span class="animate-ping absolute h-full w-full rounded-full bg-yellow-400 opacity-80"></span><span class="relative h-2 w-2 rounded-full bg-yellow-500"></span></span>
-            A MATRIZ DO JIU-JITSU
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-4 flex flex-col items-center text-center">
+        
+        <img src="imagens/logo_bjj_digital_OFC.png" alt="BJJ Digital Core" class="h-28 md:h-40 w-auto mb-8 drop-shadow-[0_0_25px_rgba(234,179,8,0.5)]">
+
+        <div class="border border-yellow-600/40 bg-yellow-900/10 backdrop-blur-sm rounded-full px-5 py-1.5 flex items-center gap-2 mb-6">
+            <div class="w-1.5 h-1.5 bg-yellow-500 rounded-full shadow-[0_0_5px_#eab308] animate-pulse"></div>
+            <span class="text-[9px] text-yellow-500 font-bold tracking-[0.2em] uppercase">A Matriz do Jiu-Jitsu</span>
         </div>
         
-        <h1 class="text-5xl md:text-7xl lg:text-8xl font-black leading-[1.1] tracking-tighter mb-6">
-            O Futuro do <br class="md:hidden">
-            <span class="text-gradient-gold">Jiu-Jitsu</span>
+        <h1 class="text-5xl md:text-7xl font-black leading-tight tracking-tighter mb-4 text-white">
+            O Futuro do <span class="text-gradient-gold">Jiu-Jitsu</span>
         </h1>
         
-        <p class="mt-5 text-lg md:text-2xl text-gray-300 max-w-3xl mx-auto font-medium">
+        <p class="text-base md:text-xl text-gray-400 max-w-3xl mx-auto font-medium mb-16">
             Gestão de elite para academias, evolução técnica no ensino a distância e domínio absoluto na organização de campeonatos.
         </p>
 
-        <div class="mt-12 flex flex-wrap justify-center gap-6">
-            <a href="#solucoes" class="btn-primary-gradient px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest flex items-center gap-2 text-black shadow-2xl">
-                <i class="fas fa-arrow-down"></i> Explorar Pilares
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl mb-12">
+            
+            <a href="https://maneger.bjjdigital.com.br" target="_blank" class="group relative bg-[#0a0a0a]/80 backdrop-blur-md border border-cyan-500/50 hover:border-cyan-400 rounded-2xl p-6 flex items-center justify-center transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_35px_rgba(6,182,212,0.4)] hover:-translate-y-1">
+                <img src="imagens/logo_bjj_maneger_ofc.png" alt="BJJ Manager" class="h-16 w-auto object-contain drop-shadow-[0_0_10px_rgba(6,182,212,0.6)] group-hover:scale-105 transition-transform duration-300">
             </a>
-            <a href="https://maneger.bjjdigital.com.br" target="_blank" class="glass-card px-8 py-4 rounded-xl font-bold text-sm uppercase tracking-wider flex items-center gap-2 border-white/20 text-white hover:bg-white/10 transition-all">
-                <i class="fas fa-chalkboard-user"></i> Acessar Manager
+
+            <a href="https://exams.bjjdigital.com.br" target="_blank" class="group relative bg-[#0a0a0a]/80 backdrop-blur-md border border-emerald-500/50 hover:border-emerald-400 rounded-2xl p-6 flex items-center justify-center transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:shadow-[0_0_35px_rgba(16,185,129,0.4)] hover:-translate-y-1 cursor-pointer">
+                <img src="imagens/logo_bjj_exams_ofc.png" alt="BJJ Exams" class="h-16 w-auto object-contain drop-shadow-[0_0_10px_rgba(16,185,129,0.6)] group-hover:scale-105 transition-transform duration-300">
             </a>
+
+            <a href="https://arena.bjjdigital.com.br" target="_blank" class="group relative bg-[#0a0a0a]/80 backdrop-blur-md border border-rose-600/50 hover:border-rose-500 rounded-2xl p-6 flex items-center justify-center transition-all duration-300 shadow-[0_0_20px_rgba(225,29,72,0.2)] hover:shadow-[0_0_35px_rgba(225,29,72,0.4)] hover:-translate-y-1 cursor-pointer">
+                <img src="imagens/logo_bjj_arena_ofc.png" alt="BJJ Arena" class="h-16 w-auto object-contain drop-shadow-[0_0_10px_rgba(225,29,72,0.6)] group-hover:scale-105 transition-transform duration-300">
+            </a>
+
         </div>
+
+        <a href="#solucoes" class="btn-gold px-8 py-3.5 rounded-xl font-black text-xs uppercase tracking-widest flex items-center gap-2">
+            <i class="fas fa-arrow-down"></i> Explorar Pilares
+        </a>
+
     </div>
 </section>
 
-<section id="solucoes" class="py-24 md:py-32 relative border-t border-white/5 bg-gradient-to-b from-transparent via-[#02040a]/80 to-[#02040a]">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+<section id="solucoes" class="py-24 relative border-t border-white/5 bg-gradient-to-b from-[#040508] to-[#020203]">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+        
         <div class="text-center mb-20">
-            <h2 class="text-4xl md:text-5xl font-black text-white mb-5 tracking-tight">Três Soluções. <br class="md:hidden">Um Propósito.</h2>
-            <div class="h-1 w-24 bg-yellow-500/80 mx-auto rounded-full mb-6"></div>
-            <p class="text-gray-400 text-lg max-w-2xl mx-auto">Soluções independentes que se conectam para formar a plataforma mais robusta do mercado.</p>
+            <h2 class="text-3xl md:text-4xl font-black text-white mb-4 tracking-tight">Três Soluções. Um Propósito.</h2>
+            <p class="text-gray-400 text-base max-w-2xl mx-auto">Sistemas modulares e independentes, desenhados para resolver os desafios reais do seu tatame.</p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-10">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <div class="glass-card rounded-3xl p-7 lg:p-9 flex flex-col relative overflow-hidden group card-glow-manager transition-all duration-500">
-                <div class="absolute -top-20 -right-20 w-56 h-56 bg-cyan-500/20 rounded-full blur-[70px] group-hover:bg-cyan-500/40 transition"></div>
-                <div class="flex justify-between items-start mb-6">
-                    <div class="bg-black/40 p-2 rounded-2xl backdrop-blur-sm border border-cyan-500/20">
-                        <img src="imagens/logo_bjj_maneger_ofc.png" alt="BJJ Manager" class="h-20 w-auto drop-shadow-[0_0_12px_rgba(6,182,212,0.7)]">
+            <div class="glass-card rounded-3xl p-8 flex flex-col relative overflow-hidden group hover:border-cyan-500/50 transition-all duration-300">
+                <div class="absolute -top-20 -right-20 w-40 h-40 bg-cyan-500/10 rounded-full blur-[50px] group-hover:bg-cyan-500/20 transition"></div>
+                <div class="mb-6 flex items-center gap-4 relative z-10">
+                    <img src="imagens/logo_bjj_maneger_ofc.png" alt="Manager" class="h-12 w-auto drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]">
+                    <div>
+                        <h3 class="text-xl font-black text-white">Manager</h3>
+                        <span class="text-cyan-400 text-[9px] font-bold uppercase tracking-widest">Gestão de Academias</span>
                     </div>
-                    <span class="bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-3 py-1 rounded-full text-[9px] font-black uppercase flex items-center gap-1.5"><i class="fas fa-check-circle text-[10px]"></i> Online</span>
                 </div>
-                <h3 class="text-3xl font-black text-white mb-1">BJJ Manager</h3>
-                <p class="text-cyan-400 font-bold text-[10px] uppercase tracking-wider mb-5">Gestão de Academias</p>
-                <ul class="text-gray-300 text-sm space-y-3 mb-8 flex-1">
-                    <li class="flex items-start gap-2"><i class="fas fa-bolt text-cyan-400 text-xs mt-1"></i> <span>Cobrança automatizada via PIX e Cartão</span></li>
-                    <li class="flex items-start gap-2"><i class="fas fa-map-pin text-cyan-400 text-xs mt-1"></i> <span>Check-in via GPS e controle de presenças</span></li>
-                    <li class="flex items-start gap-2"><i class="fas fa-id-card text-cyan-400 text-xs mt-1"></i> <span>Portal exclusivo com carteirinha digital</span></li>
-                    <li class="flex items-start gap-2"><i class="fas fa-chart-line text-cyan-400 text-xs mt-1"></i> <span>Relatórios e emissão de certificados oficiais</span></li>
+                <ul class="text-gray-400 text-sm space-y-3 mb-8 flex-1 relative z-10">
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-cyan-500 mt-1"></i> <span>Cobrança automática via PIX e Cartão</span></li>
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-cyan-500 mt-1"></i> <span>Check-in via GPS e controle de presenças</span></li>
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-cyan-500 mt-1"></i> <span>Portal exclusivo com carteirinha digital</span></li>
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-cyan-500 mt-1"></i> <span>Relatórios e emissão de certificados</span></li>
                 </ul>
-                <a href="https://maneger.bjjdigital.com.br" target="_blank" class="relative z-10 w-full bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-500 hover:to-cyan-600 text-white font-extrabold py-3.5 rounded-2xl text-center text-[11px] uppercase tracking-widest transition-all shadow-[0_0_18px_rgba(6,182,212,0.5)] flex items-center justify-center gap-2 group">
-                    <i class="fas fa-rocket"></i> Acessar Sistema Completo
-                    <i class="fas fa-arrow-right text-[10px] transition-transform group-hover:translate-x-1"></i>
-                </a>
             </div>
 
-            <div class="glass-card rounded-3xl p-7 lg:p-9 flex flex-col relative overflow-hidden group card-glow-exams transition-all duration-500">
-                <div class="absolute -top-20 -right-20 w-56 h-56 bg-emerald-500/20 rounded-full blur-[70px] group-hover:bg-emerald-500/30 transition"></div>
-                <div class="flex justify-between items-start mb-6">
-                    <div class="bg-black/40 p-2 rounded-2xl backdrop-blur-sm border border-emerald-500/20">
-                        <img src="imagens/logo_bjj_exams_ofc.png" alt="BJJ Exams" class="h-20 w-auto grayscale group-hover:grayscale-0 transition duration-300 opacity-80 group-hover:opacity-100">
+            <div class="glass-card rounded-3xl p-8 flex flex-col relative overflow-hidden group hover:border-emerald-500/50 transition-all duration-300">
+                <div class="absolute -top-20 -right-20 w-40 h-40 bg-emerald-500/10 rounded-full blur-[50px] group-hover:bg-emerald-500/20 transition"></div>
+                <div class="mb-6 flex items-center gap-4 relative z-10">
+                    <img src="imagens/logo_bjj_exams_ofc.png" alt="Exams" class="h-12 w-auto drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]">
+                    <div>
+                        <h3 class="text-xl font-black text-white">Exams</h3>
+                        <span class="text-emerald-400 text-[9px] font-bold uppercase tracking-widest">Plataforma E-Learning</span>
                     </div>
-                    <span class="bg-white/10 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full text-[9px] font-black uppercase flex items-center gap-1.5"><i class="fas fa-hourglass-half"></i> Em Breve</span>
                 </div>
-                <h3 class="text-3xl font-black text-white mb-1">BJJ Exams</h3>
-                <p class="text-emerald-400 font-bold text-[10px] uppercase tracking-wider mb-5">Plataforma E-Learning</p>
-                <ul class="text-gray-300 text-sm space-y-3 mb-8 flex-1">
-                    <li class="flex items-start gap-2"><i class="fas fa-video text-emerald-400 text-xs mt-1"></i> <span>Hospedagem de cursos e currículos em vídeo</span></li>
-                    <li class="flex items-start gap-2"><i class="fas fa-brain text-emerald-400 text-xs mt-1"></i> <span>Exames teóricos oficiais de graduação</span></li>
-                    <li class="flex items-start gap-2"><i class="fas fa-comments text-emerald-400 text-xs mt-1"></i> <span><strong class="text-white">Modo Rola:</strong> ferramenta exclusiva de perguntas e respostas</span></li>
-                    <li class="flex items-start gap-2"><i class="fas fa-tachometer-alt text-emerald-400 text-xs mt-1"></i> <span>Padronização técnica global da sua equipe</span></li>
+                <ul class="text-gray-400 text-sm space-y-3 mb-8 flex-1 relative z-10">
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-emerald-500 mt-1"></i> <span>Hospedagem de cursos em vídeo</span></li>
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-emerald-500 mt-1"></i> <span>Exames teóricos oficiais de graduação</span></li>
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-emerald-500 mt-1"></i> <span>Ferramenta interativa "Modo Rola"</span></li>
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-emerald-500 mt-1"></i> <span>Padronização técnica global</span></li>
                 </ul>
-                <a href="https://exams.bjjdigital.com.br" target="_blank" class="w-full bg-slate-900/60 text-slate-400 font-black py-3.5 rounded-2xl text-center text-[11px] uppercase tracking-widest flex items-center justify-center gap-2 border border-dashed border-emerald-500/40 cursor-not-allowed pointer-events-none transition-colors group-hover:border-emerald-500/60">
-                    <i class="fas fa-lock"></i> Acesso Fechado
-                </a>
             </div>
 
-            <div class="glass-card rounded-3xl p-7 lg:p-9 flex flex-col relative overflow-hidden group card-glow-arena transition-all duration-500">
-                <div class="absolute -top-20 -right-20 w-56 h-56 bg-rose-500/20 rounded-full blur-[70px] group-hover:bg-rose-500/30 transition"></div>
-                <div class="flex justify-between items-start mb-6">
-                    <div class="bg-black/40 p-2 rounded-2xl backdrop-blur-sm border border-rose-500/20">
-                        <img src="imagens/logo_bjj_arena_ofc.png" alt="BJJ Arena" class="h-20 w-auto grayscale group-hover:grayscale-0 transition duration-300 opacity-80 group-hover:opacity-100">
+            <div class="glass-card rounded-3xl p-8 flex flex-col relative overflow-hidden group hover:border-rose-600/50 transition-all duration-300">
+                <div class="absolute -top-20 -right-20 w-40 h-40 bg-rose-600/10 rounded-full blur-[50px] group-hover:bg-rose-600/20 transition"></div>
+                <div class="mb-6 flex items-center gap-4 relative z-10">
+                    <img src="imagens/logo_bjj_arena_ofc.png" alt="Arena" class="h-12 w-auto drop-shadow-[0_0_8px_rgba(225,29,72,0.5)]">
+                    <div>
+                        <h3 class="text-xl font-black text-white">Arena</h3>
+                        <span class="text-rose-500 text-[9px] font-bold uppercase tracking-widest">Gestão de Competições</span>
                     </div>
-                    <span class="bg-white/10 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full text-[9px] font-black uppercase flex items-center gap-1.5"><i class="fas fa-microphone"></i> Em Breve</span>
                 </div>
-                <h3 class="text-3xl font-black text-white mb-1">BJJ Arena</h3>
-                <p class="text-rose-400 font-bold text-[10px] uppercase tracking-wider mb-5">Gestão de Competições</p>
-                <ul class="text-gray-300 text-sm space-y-3 mb-8 flex-1">
-                    <li class="flex items-start gap-2"><i class="fas fa-chalkboard text-rose-400 text-xs mt-1"></i> <span>Inscrições automáticas e geração de brackets</span></li>
-                    <li class="flex items-start gap-2"><i class="fas fa-stopwatch text-rose-400 text-xs mt-1"></i> <span>Cronômetros digitais integrados com placar</span></li>
-                    <li class="flex items-start gap-2"><i class="fas fa-id-card text-rose-400 text-xs mt-1"></i> <span>Checagem oficial de atletas e painel de arbitragem</span></li>
-                    <li class="flex items-start gap-2"><i class="fas fa-trophy text-rose-400 text-xs mt-1"></i> <span>Resultados ao vivo atualizados em tempo real</span></li>
+                <ul class="text-gray-400 text-sm space-y-3 mb-8 flex-1 relative z-10">
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-rose-500 mt-1"></i> <span>Inscrições automáticas e brackets</span></li>
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-rose-500 mt-1"></i> <span>Cronômetros digitais integrados</span></li>
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-rose-500 mt-1"></i> <span>Checagem oficial e painel de arbitragem</span></li>
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-rose-500 mt-1"></i> <span>Resultados atualizados em tempo real</span></li>
                 </ul>
-                <a href="https://arena.bjjdigital.com.br" target="_blank" class="w-full bg-slate-900/60 text-slate-400 font-black py-3.5 rounded-2xl text-center text-[11px] uppercase tracking-widest flex items-center justify-center gap-2 border border-dashed border-rose-500/40 cursor-not-allowed pointer-events-none transition-colors group-hover:border-rose-500/60">
-                    <i class="fas fa-lock"></i> Acesso Fechado
-                </a>
             </div>
+
         </div>
     </div>
 </section>
 
-<section class="py-16 md:py-24 relative">
+<footer class="border-t border-white/5 bg-[#020203] py-10 mt-auto z-20 relative">
     <div class="max-w-7xl mx-auto px-6">
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-            <div class="space-y-5">
-                <span class="text-yellow-500 text-sm font-black uppercase tracking-wider flex items-center gap-2"><i class="fas fa-cogs"></i> Ecossistema unificado</span>
-                <h2 class="text-3xl md:text-4xl font-black text-white leading-tight">Integração que gera <span class="text-gradient-gold">resultados reais</span></h2>
-                <p class="text-gray-400 leading-relaxed">Dados sincronizados entre academias, atletas e eventos. Maximize sua gestão com o BJJ Manager, engaje alunos com o BJJ Exams e crie campeonatos profissionais com poucos cliques no BJJ Arena.</p>
-                <div class="flex flex-wrap gap-4 pt-3">
-                    <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2"><i class="fas fa-cubes text-yellow-500"></i> <span class="text-xs font-semibold text-gray-300">Estrutura Modular</span></div>
-                    <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2"><i class="fas fa-shield-alt text-yellow-500"></i> <span class="text-xs font-semibold text-gray-300">Segurança de Dados</span></div>
-                </div>
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-gray-500 text-[11px] font-medium tracking-wide text-center md:text-left">
+                © 2026 BJJ DIGITAL. Todos os direitos reservados.
             </div>
-            
-            <div class="relative flex justify-center">
-                <div class="w-64 h-64 rounded-full bg-yellow-500/10 blur-3xl absolute"></div>
-                <div class="glass-card rounded-3xl p-8 w-full max-w-sm border-yellow-500/20 text-center backdrop-blur-xl flex flex-col items-center justify-center gap-4">
-                    <img src="imagens/logo_bjj_digital_OFC.png" alt="BJJ Digital" class="h-24 w-auto drop-shadow-[0_0_15px_rgba(234,179,8,0.5)]">
-                    <h4 class="text-white font-black uppercase tracking-widest mt-2">Tecnologia de Ponta</h4>
-                    <p class="text-xs text-gray-400">Criado para fortalecer as raízes e acelerar o futuro do Jiu-Jitsu no Brasil.</p>
-                </div>
+            <div class="flex gap-6">
+                <a href="#" class="text-gray-500 hover:text-white transition-colors text-lg"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-gray-500 hover:text-white transition-colors text-lg"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-gray-500 hover:text-white transition-colors text-lg"><i class="fab fa-youtube"></i></a>
             </div>
         </div>
-    </div>
-</section>
-
-<footer class="border-t border-white/5 bg-black/60 py-12 mt-10">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-8">
-            <div class="flex items-center gap-4">
-                <img src="imagens/logo_bjj_digital_OFC.png" alt="BJJ Digital" class="h-9 w-auto drop-shadow-md opacity-80">
-                <div class="h-6 w-px bg-white/20 hidden md:block"></div>
-                <span class="text-gray-500 text-xs font-bold tracking-wide">© 2026 BJJ Digital - A Matriz do Jiu-Jitsu</span>
-            </div>
-            <div class="flex gap-8">
-                <a href="#" class="text-gray-400 hover:text-yellow-400 text-xs font-bold uppercase transition flex items-center gap-1"><i class="fab fa-instagram"></i> Instagram</a>
-                <a href="#" class="text-gray-400 hover:text-yellow-400 text-xs font-bold uppercase transition flex items-center gap-1"><i class="fas fa-envelope"></i> Contato</a>
-            </div>
-        </div>
-        <div class="text-center text-[10px] text-gray-600 mt-8">Tecnologia integrada para academias, professores e promotores de eventos. Soluções modulares com evolução contínua.</div>
     </div>
 </footer>
 
 <script>
-    // Progress bar scroll
-    window.addEventListener('scroll', () => {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        document.getElementById('progressBar').style.width = scrolled + '%';
-    });
-
-    // Navbar blur effect
+    // Controle da opacidade do menu ao rolar
     const nav = document.querySelector('nav');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 30) {
-            nav.classList.add('bg-black/70', 'backdrop-blur-2xl');
-            nav.classList.remove('bg-black/30');
+        if (window.scrollY > 50) {
+            nav.classList.add('bg-black/80');
+            nav.classList.remove('bg-black/40');
         } else {
-            nav.classList.add('bg-black/30');
-            nav.classList.remove('bg-black/70');
+            nav.classList.add('bg-black/40');
+            nav.classList.remove('bg-black/80');
         }
     });
 </script>
-
-<style>
-    html {
-        scroll-behavior: smooth;
-    }
-    ::-webkit-scrollbar {
-        width: 5px;
-    }
-    ::-webkit-scrollbar-track {
-        background: #030712;
-    }
-    ::-webkit-scrollbar-thumb {
-        background: #eab308;
-        border-radius: 10px;
-    }
-    .glass-card {
-        transition: transform 0.3s ease, box-shadow 0.4s ease;
-    }
-</style>
 
 </body>
 </html>
